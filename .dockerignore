@@ -1,0 +1,14 @@
+.git
+.github
+node_modules
+npm-debug.log
+data
+*.bak
+*.sql
+*.zip
+*.7z
+*.rar
+*.log
+.env
+.env.*
+!env.example

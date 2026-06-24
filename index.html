@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>سپیدار | مدیریت اطلاعات پایه</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar" aria-label="منوی سیستم‌ها">
+        <div class="brand">
+          <div class="brand-mark">س</div>
+          <div>
+            <h1>سپیدار</h1>
+            <p>مدیریت اطلاعات پایه</p>
+          </div>
+        </div>
+        <nav id="systemMenu" class="system-menu"></nav>
+      </aside>
+
+      <main class="main">
+        <header class="topbar">
+          <div>
+            <p class="eyebrow">سامانه‌های مرتبط با نسخه پشتیبان Sepidar 5.2.5</p>
+            <h2 id="pageTitle">اطلاعات پایه</h2>
+          </div>
+          <div class="top-actions">
+            <button id="fullscreenBtn" class="ghost-btn" type="button">نمای تمام‌صفحه جدول</button>
+            <button id="exportBtn" class="ghost-btn" type="button">خروجی JSON</button>
+            <label class="ghost-btn file-action">
+              ورود JSON
+              <input id="importInput" type="file" accept="application/json" />
+            </label>
+            <button id="sqlImportBtn" class="ghost-btn" type="button">ورود از SQL Server</button>
+            <button id="resetBtn" class="danger-btn" type="button">بازنشانی داده نمونه</button>
+          </div>
+        </header>
+
+        <section class="module-tabs" id="moduleTabs" aria-label="زیرمنوهای اطلاعات پایه"></section>
+
+        <section class="content-grid">
+          <div class="panel table-panel">
+            <div class="toolbar">
+              <div class="search-box">
+                <label for="searchInput">جستجو</label>
+                <input id="searchInput" type="search" placeholder="عبارت، کد، عنوان یا توضیح..." />
+              </div>
+              <div class="filter-box">
+                <label for="fieldFilter">فیلتر ستون</label>
+                <select id="fieldFilter"></select>
+              </div>
+              <div class="filter-box">
+                <label for="valueFilter">مقدار فیلتر</label>
+                <input id="valueFilter" type="text" placeholder="مثلا فعال یا تهران" />
+              </div>
+              <button id="addBtn" class="primary-btn" type="button">ثبت رکورد جدید</button>
+            </div>
+
+            <div class="meta-row">
+              <span id="recordCount">۰ رکورد</span>
+              <span id="tableHint">برای مرتب‌سازی روی عنوان ستون کلیک کنید.</span>
+            </div>
+
+            <div class="table-wrap">
+              <table>
+                <thead id="tableHead"></thead>
+                <tbody id="tableBody"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <aside class="panel form-panel">
+            <div class="form-header">
+              <div>
+                <p id="formMode">رکورد جدید</p>
+                <h3 id="activeTableName">-</h3>
+              </div>
+              <button id="clearFormBtn" class="ghost-btn" type="button">پاک کردن فرم</button>
+            </div>
+            <form id="editorForm" class="editor-form"></form>
+          </aside>
+        </section>
+      </main>
+    </div>
+
+    <template id="emptyStateTemplate">
+      <tr>
+        <td class="empty-state" colspan="20">رکوردی با این شرایط پیدا نشد.</td>
+      </tr>
+    </template>
+
+    <script src="./app.js"></script>
+  </body>
+</html>

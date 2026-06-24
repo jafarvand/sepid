@@ -1,0 +1,389 @@
+const MASTER_DATA_CATALOG = [
+  {
+    key: "foundation",
+    title: "زیرساخت",
+    subtitle: "سال مالی، کاربران، شماره‌گذاری و تنظیمات",
+    tables: [
+      {
+        id: "FMK.FiscalYear",
+        title: "سال مالی",
+        description: "دوره‌های مالی اصلی سیستم",
+        fields: [
+          { name: "FiscalYearId", label: "شناسه", type: "number", required: true },
+          { name: "Title", label: "عنوان", required: true },
+          { name: "StartDate", label: "تاریخ شروع", type: "date" },
+          { name: "EndDate", label: "تاریخ پایان", type: "date" },
+          { name: "IsClosed", label: "بسته شده", type: "boolean" }
+        ],
+        rows: [
+          { FiscalYearId: 1, Title: "سال مالی ۱۴۰۳", StartDate: "1403/01/01", EndDate: "1403/12/29", IsClosed: false },
+          { FiscalYearId: 2, Title: "سال مالی ۱۴۰۲", StartDate: "1402/01/01", EndDate: "1402/12/29", IsClosed: true }
+        ]
+      },
+      {
+        id: "FMK.User",
+        title: "کاربران",
+        description: "کاربران و وضعیت دسترسی",
+        fields: [
+          { name: "UserId", label: "شناسه", type: "number", required: true },
+          { name: "Name", label: "نام کاربری", required: true },
+          { name: "FullName", label: "نام کامل" },
+          { name: "Role", label: "نقش", options: ["مدیر سیستم", "حسابدار", "انباردار", "فروش"] },
+          { name: "IsActive", label: "فعال", type: "boolean" }
+        ],
+        rows: [
+          { UserId: 1, Name: "admin", FullName: "مدیر سیستم", Role: "مدیر سیستم", IsActive: true },
+          { UserId: 2, Name: "accountant", FullName: "کاربر حسابداری", Role: "حسابدار", IsActive: true }
+        ]
+      }
+    ]
+  },
+  {
+    key: "general",
+    title: "اطلاعات عمومی",
+    subtitle: "اشخاص، ارز، مالیات، مراکز هزینه",
+    tables: [
+      {
+        id: "GNR.Party",
+        title: "اشخاص",
+        description: "مشتری، فروشنده، واسطه و سایر طرف حساب‌ها",
+        fields: [
+          { name: "PartyId", label: "شناسه", type: "number", required: true },
+          { name: "Code", label: "کد", required: true },
+          { name: "Type", label: "نوع", options: ["مشتری", "فروشنده", "واسطه", "کارمند", "سایر"] },
+          { name: "Name", label: "نام" },
+          { name: "LastName", label: "نام خانوادگی/عنوان" },
+          { name: "NationalId", label: "شناسه ملی" },
+          { name: "Phone", label: "تلفن" },
+          { name: "City", label: "شهر" },
+          { name: "IsActive", label: "فعال", type: "boolean" }
+        ],
+        rows: [
+          { PartyId: 1, Code: "C-1001", Type: "مشتری", Name: "شرکت", LastName: "نمونه تهران", NationalId: "10100000001", Phone: "021-44000000", City: "تهران", IsActive: true },
+          { PartyId: 2, Code: "V-2001", Type: "فروشنده", Name: "تامین", LastName: "کالا ایرانیان", NationalId: "10300000002", Phone: "031-33000000", City: "اصفهان", IsActive: true }
+        ]
+      },
+      {
+        id: "GNR.Currency",
+        title: "ارزها",
+        description: "ارز و دقت محاسبات",
+        fields: [
+          { name: "CurrencyId", label: "شناسه", type: "number", required: true },
+          { name: "Code", label: "کد", required: true },
+          { name: "Title", label: "عنوان", required: true },
+          { name: "ExchangeUnit", label: "واحد تبدیل", type: "number" },
+          { name: "PrecisionCount", label: "دقت اعشار", type: "number" },
+          { name: "IsBase", label: "ارز پایه", type: "boolean" }
+        ],
+        rows: [
+          { CurrencyId: 1, Code: "IRR", Title: "ریال", ExchangeUnit: 1, PrecisionCount: 0, IsBase: true },
+          { CurrencyId: 2, Code: "USD", Title: "دلار آمریکا", ExchangeUnit: 1, PrecisionCount: 2, IsBase: false }
+        ]
+      },
+      {
+        id: "GNR.CostCenter",
+        title: "مراکز هزینه",
+        description: "ساختار تحلیلی هزینه",
+        fields: [
+          { name: "CostCenterId", label: "شناسه", type: "number", required: true },
+          { name: "Code", label: "کد", required: true },
+          { name: "Title", label: "عنوان", required: true },
+          { name: "ParentCode", label: "کد والد" },
+          { name: "IsActive", label: "فعال", type: "boolean" }
+        ],
+        rows: [
+          { CostCenterId: 1, Code: "10", Title: "دفتر مرکزی", ParentCode: "", IsActive: true },
+          { CostCenterId: 2, Code: "20", Title: "انبار و لجستیک", ParentCode: "", IsActive: true }
+        ]
+      },
+      {
+        id: "GNR.Vat",
+        title: "مالیات و عوارض",
+        description: "نرخ‌های مالیات بر ارزش افزوده",
+        fields: [
+          { name: "VatId", label: "شناسه", type: "number", required: true },
+          { name: "Title", label: "عنوان", required: true },
+          { name: "TaxRate", label: "نرخ مالیات", type: "number" },
+          { name: "DutyRate", label: "نرخ عوارض", type: "number" },
+          { name: "IsActive", label: "فعال", type: "boolean" }
+        ],
+        rows: [
+          { VatId: 1, Title: "نرخ عمومی", TaxRate: 9, DutyRate: 0, IsActive: true },
+          { VatId: 2, Title: "معاف", TaxRate: 0, DutyRate: 0, IsActive: true }
+        ]
+      }
+    ]
+  },
+  {
+    key: "accounting",
+    title: "حسابداری",
+    subtitle: "سرفصل‌ها و تفصیلی‌ها",
+    tables: [
+      {
+        id: "ACC.Account",
+        title: "سرفصل حساب",
+        description: "کدینگ حسابداری",
+        fields: [
+          { name: "AccountId", label: "شناسه", type: "number", required: true },
+          { name: "Code", label: "کد حساب", required: true },
+          { name: "Title", label: "عنوان", required: true },
+          { name: "Level", label: "سطح", type: "number" },
+          { name: "Nature", label: "ماهیت", options: ["بدهکار", "بستانکار", "بدون ماهیت"] },
+          { name: "IsActive", label: "فعال", type: "boolean" }
+        ],
+        rows: [
+          { AccountId: 1, Code: "1101", Title: "صندوق", Level: 4, Nature: "بدهکار", IsActive: true },
+          { AccountId: 2, Code: "2101", Title: "حساب‌های پرداختنی", Level: 4, Nature: "بستانکار", IsActive: true }
+        ]
+      },
+      {
+        id: "ACC.DL",
+        title: "تفصیلی",
+        description: "تفصیلی اشخاص، بانک، صندوق، انبار و سایر ابعاد",
+        fields: [
+          { name: "DLId", label: "شناسه", type: "number", required: true },
+          { name: "Code", label: "کد", required: true },
+          { name: "Title", label: "عنوان", required: true },
+          { name: "Type", label: "نوع", options: ["شخص", "بانک", "صندوق", "انبار", "مرکز هزینه", "سایر"] },
+          { name: "IsActive", label: "فعال", type: "boolean" }
+        ],
+        rows: [
+          { DLId: 1, Code: "DL-1001", Title: "شرکت نمونه تهران", Type: "شخص", IsActive: true },
+          { DLId: 2, Code: "DL-3001", Title: "انبار مرکزی", Type: "انبار", IsActive: true }
+        ]
+      }
+    ]
+  },
+  {
+    key: "inventory",
+    title: "انبار و کالا",
+    subtitle: "کالا، واحد، انبار و ردیابی",
+    tables: [
+      {
+        id: "INV.Item",
+        title: "کالا و خدمت",
+        description: "اقلام قابل خرید، فروش، مصرف یا دارایی",
+        fields: [
+          { name: "ItemId", label: "شناسه", type: "number", required: true },
+          { name: "Code", label: "کد کالا", required: true },
+          { name: "Title", label: "عنوان", required: true },
+          { name: "Type", label: "نوع", options: ["کالا", "خدمت", "دارایی", "بسته"] },
+          { name: "Unit", label: "واحد اصلی" },
+          { name: "TaxExempt", label: "معاف از مالیات", type: "boolean" },
+          { name: "IsActive", label: "فعال", type: "boolean" }
+        ],
+        rows: [
+          { ItemId: 1, Code: "I-1001", Title: "کالای نمونه", Type: "کالا", Unit: "عدد", TaxExempt: false, IsActive: true },
+          { ItemId: 2, Code: "S-2001", Title: "خدمت نصب", Type: "خدمت", Unit: "ساعت", TaxExempt: false, IsActive: true }
+        ]
+      },
+      {
+        id: "INV.Unit",
+        title: "واحد سنجش",
+        description: "واحدهای اصلی و فرعی کالا",
+        fields: [
+          { name: "UnitId", label: "شناسه", type: "number", required: true },
+          { name: "Title", label: "عنوان", required: true },
+          { name: "Symbol", label: "نماد" },
+          { name: "IsActive", label: "فعال", type: "boolean" }
+        ],
+        rows: [
+          { UnitId: 1, Title: "عدد", Symbol: "عدد", IsActive: true },
+          { UnitId: 2, Title: "کیلوگرم", Symbol: "kg", IsActive: true }
+        ]
+      },
+      {
+        id: "INV.Stock",
+        title: "انبار",
+        description: "انبارها و محل‌های نگهداری",
+        fields: [
+          { name: "StockId", label: "شناسه", type: "number", required: true },
+          { name: "Code", label: "کد", required: true },
+          { name: "Title", label: "عنوان", required: true },
+          { name: "Account", label: "حساب مرتبط" },
+          { name: "Keeper", label: "انباردار" },
+          { name: "IsActive", label: "فعال", type: "boolean" }
+        ],
+        rows: [
+          { StockId: 1, Code: "ST-01", Title: "انبار مرکزی", Account: "موجودی کالا", Keeper: "انباردار اصلی", IsActive: true },
+          { StockId: 2, Code: "ST-02", Title: "انبار فروشگاه", Account: "موجودی کالا", Keeper: "مسئول فروشگاه", IsActive: true }
+        ]
+      },
+      {
+        id: "INV.TracingCategory",
+        title: "گروه ردیابی",
+        description: "سریال، بچ، تاریخ انقضا و سایر ردیابی‌ها",
+        fields: [
+          { name: "TracingCategoryId", label: "شناسه", type: "number", required: true },
+          { name: "Title", label: "عنوان", required: true },
+          { name: "Mode", label: "روش", options: ["سریال", "بچ", "تاریخ انقضا", "سایر"] },
+          { name: "IsRequired", label: "اجباری", type: "boolean" }
+        ],
+        rows: [
+          { TracingCategoryId: 1, Title: "سریال دستگاه", Mode: "سریال", IsRequired: true },
+          { TracingCategoryId: 2, Title: "شماره بچ", Mode: "بچ", IsRequired: false }
+        ]
+      }
+    ]
+  },
+  {
+    key: "receipt-payment",
+    title: "دریافت و پرداخت",
+    subtitle: "بانک، صندوق، چک و حساب بانکی",
+    tables: [
+      {
+        id: "RPA.Cash",
+        title: "صندوق",
+        description: "صندوق‌های نقدی",
+        fields: [
+          { name: "CashId", label: "شناسه", type: "number", required: true },
+          { name: "Code", label: "کد", required: true },
+          { name: "Title", label: "عنوان", required: true },
+          { name: "Currency", label: "ارز" },
+          { name: "DLCode", label: "کد تفصیلی" },
+          { name: "IsActive", label: "فعال", type: "boolean" }
+        ],
+        rows: [
+          { CashId: 1, Code: "CASH-01", Title: "صندوق ریالی", Currency: "ریال", DLCode: "DL-CASH", IsActive: true }
+        ]
+      },
+      {
+        id: "RPA.Bank",
+        title: "بانک",
+        description: "بانک‌های طرف حساب",
+        fields: [
+          { name: "BankId", label: "شناسه", type: "number", required: true },
+          { name: "Code", label: "کد", required: true },
+          { name: "Title", label: "عنوان", required: true },
+          { name: "IsActive", label: "فعال", type: "boolean" }
+        ],
+        rows: [
+          { BankId: 1, Code: "012", Title: "بانک ملت", IsActive: true },
+          { BankId: 2, Code: "017", Title: "بانک ملی", IsActive: true }
+        ]
+      },
+      {
+        id: "RPA.BankAccount",
+        title: "حساب بانکی",
+        description: "حساب‌های بانکی و تفصیلی مرتبط",
+        fields: [
+          { name: "BankAccountId", label: "شناسه", type: "number", required: true },
+          { name: "Bank", label: "بانک" },
+          { name: "Branch", label: "شعبه" },
+          { name: "AccountNo", label: "شماره حساب" },
+          { name: "IBAN", label: "شبا" },
+          { name: "DLCode", label: "کد تفصیلی" },
+          { name: "IsActive", label: "فعال", type: "boolean" }
+        ],
+        rows: [
+          { BankAccountId: 1, Bank: "بانک ملت", Branch: "مرکزی", AccountNo: "123456789", IBAN: "IR000000000000000000000000", DLCode: "DL-BANK-01", IsActive: true }
+        ]
+      }
+    ]
+  },
+  {
+    key: "sales",
+    title: "فروش",
+    subtitle: "نوع فروش، قیمت، تخفیف و کمیسیون",
+    tables: [
+      {
+        id: "SLS.SaleType",
+        title: "نوع فروش",
+        description: "دسته‌بندی سیاست فروش",
+        fields: [
+          { name: "SaleTypeId", label: "شناسه", type: "number", required: true },
+          { name: "Code", label: "کد", required: true },
+          { name: "Title", label: "عنوان", required: true },
+          { name: "DefaultStock", label: "انبار پیش‌فرض" },
+          { name: "IsActive", label: "فعال", type: "boolean" }
+        ],
+        rows: [
+          { SaleTypeId: 1, Code: "S-01", Title: "فروش نقدی", DefaultStock: "انبار فروشگاه", IsActive: true },
+          { SaleTypeId: 2, Code: "S-02", Title: "فروش اعتباری", DefaultStock: "انبار مرکزی", IsActive: true }
+        ]
+      },
+      {
+        id: "SLS.Discount",
+        title: "تخفیف",
+        description: "قواعد تخفیف فروش",
+        fields: [
+          { name: "DiscountId", label: "شناسه", type: "number", required: true },
+          { name: "Title", label: "عنوان", required: true },
+          { name: "Rate", label: "درصد", type: "number" },
+          { name: "StartDate", label: "شروع", type: "date" },
+          { name: "EndDate", label: "پایان", type: "date" },
+          { name: "IsActive", label: "فعال", type: "boolean" }
+        ],
+        rows: [
+          { DiscountId: 1, Title: "تخفیف مشتریان ویژه", Rate: 5, StartDate: "1403/01/01", EndDate: "1403/12/29", IsActive: true }
+        ]
+      }
+    ]
+  },
+  {
+    key: "assets-contracts-payroll",
+    title: "سایر سیستم‌ها",
+    subtitle: "دارایی، پیمان، حقوق و دستمزد، فروشگاهی",
+    tables: [
+      {
+        id: "AST.AssetGroup",
+        title: "گروه دارایی",
+        description: "گروه‌بندی دارایی‌های ثابت",
+        fields: [
+          { name: "AssetGroupId", label: "شناسه", type: "number", required: true },
+          { name: "Code", label: "کد", required: true },
+          { name: "Title", label: "عنوان", required: true },
+          { name: "DepreciationMethod", label: "روش استهلاک" },
+          { name: "IsActive", label: "فعال", type: "boolean" }
+        ],
+        rows: [
+          { AssetGroupId: 1, Code: "A-01", Title: "تجهیزات اداری", DepreciationMethod: "خط مستقیم", IsActive: true }
+        ]
+      },
+      {
+        id: "CNT.ContractType",
+        title: "نوع قرارداد",
+        description: "انواع قراردادهای پیمانکاری",
+        fields: [
+          { name: "ContractTypeId", label: "شناسه", type: "number", required: true },
+          { name: "Title", label: "عنوان", required: true },
+          { name: "Description", label: "توضیح", type: "textarea" },
+          { name: "IsActive", label: "فعال", type: "boolean" }
+        ],
+        rows: [
+          { ContractTypeId: 1, Title: "پیمان اجرایی", Description: "قرارداد اجرای پروژه", IsActive: true }
+        ]
+      },
+      {
+        id: "PAY.Branch",
+        title: "شعبه حقوق و دستمزد",
+        description: "شعب و محل‌های کاری",
+        fields: [
+          { name: "BranchId", label: "شناسه", type: "number", required: true },
+          { name: "Code", label: "کد", required: true },
+          { name: "Title", label: "عنوان", required: true },
+          { name: "City", label: "شهر" },
+          { name: "IsActive", label: "فعال", type: "boolean" }
+        ],
+        rows: [
+          { BranchId: 1, Code: "B-01", Title: "دفتر مرکزی", City: "تهران", IsActive: true }
+        ]
+      },
+      {
+        id: "POS.Cashier",
+        title: "صندوقدار فروشگاهی",
+        description: "کاربران صندوق فروشگاهی",
+        fields: [
+          { name: "CashierId", label: "شناسه", type: "number", required: true },
+          { name: "Code", label: "کد", required: true },
+          { name: "FullName", label: "نام کامل", required: true },
+          { name: "Store", label: "فروشگاه" },
+          { name: "IsActive", label: "فعال", type: "boolean" }
+        ],
+        rows: [
+          { CashierId: 1, Code: "POS-01", FullName: "صندوقدار نمونه", Store: "فروشگاه مرکزی", IsActive: true }
+        ]
+      }
+    ]
+  }
+];
