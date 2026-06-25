@@ -5,9 +5,9 @@
     maximumFractionDigits: 4
   });
   const moduleLabels = {
-    acc: ["حسابداری", "حساب ها، تفصیلی ها، اسناد و آرتیکل ها"],
-    rpa: ["خزانه داری", "بانک، صندوق، چک، دریافت، پرداخت و تسویه"],
-    inv: ["انبار و کالا", "کالا، انبار، موجودی و گردش کالا"],
+    acc: ["سیستم حسابداری", "سرفصل حساب ها، حساب های تفصیلی، اسناد حسابداری، گردش حساب ها و گزارش سود و زیان"],
+    rpa: ["سیستم دریافت و پرداخت", "وجوه نقد، بانک، صندوق، چک، نقدینگی، دریافت و پرداخت و تعهدات دریافتنی و پرداختنی"],
+    inv: ["سیستم انبارداری", "کالا، انبار، موجودی، ورود و خروج کالا، ردیابی و توزین"],
     sls: ["فروش", "مشتری، سفارش، فاکتور و برگشت فروش"],
     pty: ["اشخاص", "طرف حساب ها و اطلاعات پایه اشخاص"],
     gnr: ["عمومی", "اطلاعات پایه و تنظیمات مشترک"],
@@ -19,6 +19,48 @@
     scd: ["زمان بندی", "برنامه ها و زمان بندی عملیات"],
     wko: ["تولید", "فرمول، سفارش و عملیات تولید"],
     pos: ["فروشگاهی", "اطلاعات و عملیات فروشگاهی"]
+  };
+  const moduleIcons = {
+    acc: "ledger",
+    rpa: "wallet",
+    inv: "boxes",
+    sls: "invoice",
+    pty: "users",
+    gnr: "settings",
+    fmk: "shield",
+    pay: "payroll",
+    ast: "asset",
+    cnt: "contract",
+    msg: "message",
+    scd: "calendar",
+    wko: "factory",
+    pos: "pos"
+  };
+  const icons = {
+    menu: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>',
+    close: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>',
+    fullscreen: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 4H4v4M16 4h4v4M8 20H4v-4M20 16v4h-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    minimize: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4v5H4M15 4v5h5M9 20v-5H4M20 15h-5v5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    export: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0 4-4m-4 4-4-4M5 19h14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    plus: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>',
+    save: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5h12l2 2v12H5zM8 5v6h8M8 19v-5h8v5" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>',
+    clear: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7 7 10 10M17 7 7 17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>',
+    prev: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 6-6 6 6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    next: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    ledger: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4h12v16H6zM9 8h6M9 12h6M9 16h4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    wallet: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h15v12H4zM4 7l3-3h12v3M16 13h3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    boxes: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h7v7H4zM13 9h7v7h-7zM8.5 5h7v4h-7z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>',
+    invoice: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4h10v16l-2-1-2 1-2-1-2 1-2-1zM9 8h6M9 12h6M9 16h4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    users: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm7 1a2.5 2.5 0 1 0 0-5M4 20a5 5 0 0 1 10 0M14 18a4 4 0 0 1 6 2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>',
+    settings: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8Zm0-5v3m0 12v3M4.2 6.2l2.1 2.1m11.4 7.4 2.1 2.1M3 12h3m12 0h3M4.2 17.8l2.1-2.1m11.4-7.4 2.1-2.1" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>',
+    shield: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 5 6v5c0 5 3 8 7 10 4-2 7-5 7-10V6z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>',
+    payroll: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16v10H4zM7 10h4M7 14h2M15 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>',
+    asset: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 20V8l7-4 7 4v12M8 20v-7h8v7M9 10h6" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>',
+    contract: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4h8l3 3v13H7zM14 4v4h4M9 12h6M9 16h6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    message: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 6h14v10H9l-4 4zM8 10h8M8 13h5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    calendar: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5h14v15H5zM8 3v4M16 3v4M5 10h14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>',
+    factory: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V9l5 4V9l5 4V5h6v15zM7 17h2M12 17h2M17 17h2" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>',
+    pos: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4h10v16H7zM9 8h6M9 12h6M10 16h4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>'
   };
   const columnLabels = {
     Id: "شناسه",
@@ -40,6 +82,49 @@
     LastModifier: "آخرین ویرایشگر",
     LastModificationDate: "تاریخ آخرین ویرایش",
     FiscalYearRef: "سال مالی",
+    AccountGroupRef: "گروه حساب",
+    AccountCode: "کد حساب",
+    AccountTitle: "عنوان حساب",
+    SLRef: "حساب معین",
+    SLId: "شناسه حساب معین",
+    DLCode: "کد تفصیلی",
+    DLTitle: "عنوان تفصیلی",
+    DetailAccountRef: "حساب تفصیلی",
+    CostCenterId: "شناسه مرکز هزینه",
+    CostCenterCode: "کد مرکز هزینه",
+    CostCenterTitle: "عنوان مرکز هزینه",
+    LedgerRef: "دفتر حسابداری",
+    LedgerId: "شناسه دفتر حسابداری",
+    JournalRef: "دفتر روزنامه",
+    JournalId: "شناسه دفتر روزنامه",
+    VoucherDate: "تاریخ سند",
+    VoucherNumber: "شماره سند",
+    VoucherState: "وضعیت سند",
+    CashFlowRef: "جریان نقدی",
+    CashFlowId: "شناسه جریان نقدی",
+    FiscalPeriodRef: "دوره مالی",
+    FiscalPeriodId: "شناسه دوره مالی",
+    PayableAmount: "تعهد پرداختنی",
+    ReceivableAmount: "تعهد دریافتنی",
+    ReceiptNumber: "شماره دریافت",
+    PaymentNumber: "شماره پرداخت",
+    ReceiptDate: "تاریخ دریافت",
+    PaymentDate: "تاریخ پرداخت",
+    CashRef: "صندوق",
+    CashId: "شناسه صندوق",
+    PettyCashRef: "تنخواه گردان",
+    PettyCashId: "شناسه تنخواه گردان",
+    PosRef: "کارت خوان",
+    PosId: "شناسه کارت خوان",
+    ChequeBookRef: "دسته چک",
+    ChequeBookId: "شناسه دسته چک",
+    ChequeDate: "تاریخ چک",
+    DueDate: "تاریخ سررسید",
+    BankBillRef: "صورت حساب بانکی",
+    BankBillId: "شناسه صورت حساب بانکی",
+    ReconciliationRef: "مغایرت گیری بانکی",
+    ReconciliationId: "شناسه مغایرت گیری بانکی",
+    LiquidityAmount: "مبلغ نقدینگی",
     AccountId: "شناسه حساب",
     AccountRef: "حساب",
     AccountSLRef: "حساب معین",
@@ -83,6 +168,56 @@
     CustomerPartyRef: "مشتری",
     SupplierPartyRef: "تامین کننده",
     ItemRef: "کالا/خدمت",
+    ItemId: "شناسه کالا/خدمت",
+    ItemID: "شناسه کالا/خدمت",
+    ItemCode: "کد کالا",
+    ItemTitle: "عنوان کالا",
+    ItemType: "نوع کالا",
+    ItemCategoryRef: "گروه کالا",
+    ItemUnitRef: "واحد کالا",
+    WarehouseId: "شناسه انبار",
+    WarehouseRef: "انبار",
+    WarehouseTitle: "عنوان انبار",
+    InventoryRef: "انبار",
+    InventoryVoucherId: "شناسه سند انبار",
+    InventoryVoucherRef: "سند انبار",
+    InventoryVoucherItemId: "شناسه قلم سند انبار",
+    VoucherType: "نوع سند",
+    StockRef: "موجودی",
+    StockId: "شناسه موجودی",
+    StockTakingRef: "انبارگردانی",
+    StockTakingId: "شناسه انبارگردانی",
+    StockTakingItemId: "شناسه قلم انبارگردانی",
+    MainUnitRef: "واحد اصلی",
+    SubUnitRef: "واحد فرعی",
+    MajorUnitRef: "واحد اصلی",
+    MinorUnitRef: "واحد فرعی",
+    UnitId: "شناسه واحد",
+    UnitTitle: "عنوان واحد",
+    UnitName: "نام واحد",
+    Quantity2: "مقدار دوم",
+    MainQuantity: "مقدار اصلی",
+    SubQuantity: "مقدار فرعی",
+    RemainingQuantity: "مقدار باقیمانده",
+    InputQuantity: "مقدار ورود",
+    OutputQuantity: "مقدار خروج",
+    ReceiptQuantity: "مقدار رسید",
+    DeliveryQuantity: "مقدار حواله",
+    TrackingRef: "ردیابی",
+    TrackingId: "شناسه ردیابی",
+    TrackingTitle: "عنوان ردیابی",
+    BatchNumber: "بچ نامبر",
+    SerialNumber: "سری ساخت",
+    ExpirationDate: "تاریخ انقضا",
+    ScaleRef: "باسکول",
+    ScaleId: "شناسه باسکول",
+    GrossWeight: "وزن پر",
+    TareWeight: "وزن خالی",
+    NetWeight: "وزن خالص",
+    WasteWeight: "افت",
+    DriverName: "نام راننده",
+    VehicleNo: "شماره خودرو",
+    CarNo: "شماره خودرو",
     ProductRef: "محصول",
     UnitRef: "واحد",
     CostCenterRef: "مرکز هزینه"
@@ -120,6 +255,17 @@
   };
   const tableLabels = {
     "ACC.Account": ["سرفصل حساب ها", "اطلاعات پایه"],
+    "ACC.AccountGroup": ["گروه حساب ها", "اطلاعات پایه"],
+    "ACC.AccountSL": ["حساب های معین", "اطلاعات پایه"],
+    "ACC.DetailAccount": ["حساب های تفصیلی", "اطلاعات پایه"],
+    "ACC.CostCenter": ["مراکز هزینه", "اطلاعات پایه"],
+    "ACC.Ledger": ["دفتر حسابداری", "اطلاعات پایه"],
+    "ACC.Journal": ["دفتر روزنامه", "عملیات"],
+    "ACC.CashFlow": ["جریان نقدی", "اطلاعات پایه"],
+    "ACC.TrialBalance": ["تراز آزمایشی", "عملیات"],
+    "ACC.ProfitLoss": ["سود و زیان", "عملیات"],
+    "ACC.AccountTurnover": ["گردش حساب ها", "عملیات"],
+    "ACC.CostCenterTurnover": ["گردش هزینه ها به تفکیک مرکز هزینه", "عملیات"],
     "ACC.AccountTopic": ["ارتباط حساب و سرفصل مالیاتی", "اطلاعات پایه"],
     "ACC.DL": ["تفصیلی ها", "اطلاعات پایه"],
     "ACC.Topic": ["سرفصل های مالیاتی", "اطلاعات پایه"],
@@ -139,6 +285,12 @@
     "RPA.Pos": ["دستگاه های کارت خوان", "اطلاعات پایه"],
     "RPA.ChequeBook": ["دسته چک ها", "اطلاعات پایه"],
     "RPA.DocSpecification": ["مشخصات اسناد خزانه", "اطلاعات پایه"],
+    "RPA.CashFlow": ["وجوه نقد", "عملیات"],
+    "RPA.LiquidityReport": ["گزارش نقدینگی", "عملیات"],
+    "RPA.PayableCommitment": ["تعهدات پرداختنی", "عملیات"],
+    "RPA.ReceivableCommitment": ["تعهدات دریافتنی", "عملیات"],
+    "RPA.ChequeOperation": ["عملیات چک", "عملیات"],
+    "RPA.ChequeStatus": ["وضعیت چک", "عملیات"],
     "RPA.BankAccountBalance": ["مانده حساب بانکی", "عملیات"],
     "RPA.CashBalance": ["مانده صندوق", "عملیات"],
     "RPA.PosBalance": ["مانده کارت خوان", "عملیات"],
@@ -172,6 +324,40 @@
     "RPA.ReconciliationItem": ["اقلام سیستم در مغایرت گیری", "عملیات"],
     "RPA.RefundCheque": ["استرداد چک", "عملیات"],
     "RPA.RefundChequeItem": ["آیتم های استرداد چک", "عملیات"],
+    "INV.Item": ["کالاها و خدمات", "اطلاعات پایه"],
+    "INV.ItemCategory": ["گروه بندی کالاها", "اطلاعات پایه"],
+    "INV.ItemUnit": ["واحدهای سنجش کالا", "اطلاعات پایه"],
+    "INV.Unit": ["واحدهای سنجش", "اطلاعات پایه"],
+    "INV.Warehouse": ["انبارها", "اطلاعات پایه"],
+    "INV.WarehouseKeeper": ["انباردارها", "اطلاعات پایه"],
+    "INV.Stock": ["موجودی کالا", "عملیات"],
+    "INV.ItemStock": ["موجودی کالا در انبار", "عملیات"],
+    "INV.ItemBalance": ["مانده کالا", "عملیات"],
+    "INV.InventoryVoucher": ["اسناد ورود و خروج انبار", "عملیات"],
+    "INV.InventoryVoucherItem": ["اقلام سند انبار", "عملیات"],
+    "INV.InventoryReceipt": ["رسید انبار", "عملیات"],
+    "INV.InventoryReceiptItem": ["اقلام رسید انبار", "عملیات"],
+    "INV.InventoryDelivery": ["حواله انبار", "عملیات"],
+    "INV.InventoryDeliveryItem": ["اقلام حواله انبار", "عملیات"],
+    "INV.Receipt": ["رسید انبار", "عملیات"],
+    "INV.ReceiptItem": ["اقلام رسید انبار", "عملیات"],
+    "INV.Delivery": ["حواله انبار", "عملیات"],
+    "INV.DeliveryItem": ["اقلام حواله انبار", "عملیات"],
+    "INV.Transfer": ["انتقال بین انبارها", "عملیات"],
+    "INV.TransferItem": ["اقلام انتقال بین انبارها", "عملیات"],
+    "INV.Adjustment": ["اصلاح موجودی", "عملیات"],
+    "INV.AdjustmentItem": ["اقلام اصلاح موجودی", "عملیات"],
+    "INV.Pricing": ["قیمت گذاری اسناد انبار", "عملیات"],
+    "INV.PricingItem": ["اقلام قیمت گذاری", "عملیات"],
+    "INV.StockTaking": ["انبارگردانی", "عملیات"],
+    "INV.StockTakingItem": ["اقلام انبارگردانی", "عملیات"],
+    "INV.Tracking": ["ردیابی کالا", "اطلاعات پایه"],
+    "INV.ItemTracking": ["ردیابی کالاها", "عملیات"],
+    "INV.Scale": ["باسکول ها", "اطلاعات پایه"],
+    "INV.Weighing": ["توزین", "عملیات"],
+    "INV.WeighingItem": ["اقلام توزین", "عملیات"],
+    "INV.ItemPrice": ["قیمت کالا", "اطلاعات پایه"],
+    "INV.ItemImage": ["تصاویر کالا", "اطلاعات پایه"],
     "FMK.FiscalYear": ["سال مالی", "اطلاعات پایه وابسته"],
     "GNR.Currency": ["ارزها", "اطلاعات پایه وابسته"],
     "GNR.Party": ["طرف حساب ها", "اطلاعات پایه وابسته"],
@@ -261,7 +447,9 @@
     document.querySelector("label[for='searchInput']").textContent = "جستجو";
     document.querySelector("label[for='fieldFilter']").textContent = "فیلتر ستون";
     document.querySelector("label[for='valueFilter']").textContent = "مقدار فیلتر";
-    el.addBtn.textContent = "رکورد جدید";
+    setButtonLabel(el.addBtn, "plus", "رکورد جدید");
+    setButtonLabel(el.clearFormBtn, "clear", "پاک کردن فرم");
+    setButtonLabel(el.exportBtn, "export", "خروجی JSON");
     document.getElementById("tableHint").textContent = "مرتب سازی و جستجو سمت سرور انجام می شود؛ فیلتر ستون روی صفحه جاری اعمال می شود.";
     renderMenuCollapsed();
     renderGridFullscreen();
@@ -269,7 +457,7 @@
 
   async function loadSchema() {
     setLoading("در حال خواندن ساختار دیتابیس...");
-    state.catalog = await apiGet("/api/schema");
+    state.catalog = sortCatalog(await apiGet("/api/schema"));
     const preferred = state.catalog.find((m) => m.key === "acc") || state.catalog[0];
     state.activeModule = preferred?.key || "";
     state.activeTableId = preferred?.tables?.[0]?.id || "";
@@ -284,7 +472,12 @@
       const btn = document.createElement("button");
       btn.type = "button";
       btn.className = `menu-btn${module.key === state.activeModule ? " active" : ""}`;
-      btn.innerHTML = `<strong>${escapeHtml(moduleTitle(module))}</strong><span>${escapeHtml(moduleSubtitle(module))} · ${toFaNumber(module.tables.length)} جدول</span>`;
+      btn.innerHTML = `
+        <span class="menu-icon">${icons[moduleIcons[module.key] || "settings"]}</span>
+        <span class="menu-copy">
+          <strong>${escapeHtml(moduleTitle(module))}</strong>
+          <span>${escapeHtml(moduleSubtitle(module))} · ${toFaNumber(module.tables.length)} جدول</span>
+        </span>`;
       btn.addEventListener("click", async () => {
         state.activeModule = module.key;
         state.activeTableId = module.tables[0]?.id || "";
@@ -299,6 +492,7 @@
       });
       el.systemMenu.appendChild(btn);
     });
+    scrollActiveMenuIntoView();
   }
 
   function renderTabs() {
@@ -338,6 +532,7 @@
       section.appendChild(list);
       el.moduleTabs.appendChild(section);
     });
+    scrollActiveTabIntoView();
   }
 
   async function loadRows() {
@@ -382,6 +577,7 @@
     const headRow = document.createElement("tr");
     fields.forEach((field) => {
       const th = document.createElement("th");
+      th.className = "sortable";
       th.textContent = fieldLabel(field);
       th.title = `${field.name} / ${field.sqlType}${field.primaryKey ? " / کلید اصلی" : ""}`;
       th.addEventListener("click", async () => {
@@ -434,7 +630,7 @@
     const prev = document.createElement("button");
     prev.type = "button";
     prev.className = "secondary-btn";
-    prev.textContent = "قبلی";
+    setButtonLabel(prev, "prev", "قبلی");
     prev.disabled = state.page <= 1;
     prev.addEventListener("click", async () => {
       state.page = Math.max(1, state.page - 1);
@@ -444,7 +640,7 @@
     const next = document.createElement("button");
     next.type = "button";
     next.className = "secondary-btn";
-    next.textContent = "بعدی";
+    setButtonLabel(next, "next", "بعدی");
     next.disabled = state.page >= totalPages;
     next.addEventListener("click", async () => {
       state.page = Math.min(totalPages, state.page + 1);
@@ -504,7 +700,7 @@
     const save = document.createElement("button");
     save.type = "submit";
     save.className = "primary-btn";
-    save.textContent = "ذخیره تغییرات";
+    setButtonLabel(save, "save", "ذخیره تغییرات");
     save.disabled = !state.primaryKey.length;
     actions.appendChild(save);
     el.editorForm.appendChild(actions);
@@ -548,7 +744,7 @@
 
   function renderMenuCollapsed() {
     el.appShell.classList.toggle("menu-collapsed", state.menuCollapsed);
-    el.menuToggleBtn.textContent = state.menuCollapsed ? "باز کردن منو" : "بستن منو";
+    setButtonLabel(el.menuToggleBtn, state.menuCollapsed ? "menu" : "close", state.menuCollapsed ? "باز کردن منو" : "بستن منو");
   }
 
   function toggleGridFullscreen() {
@@ -559,7 +755,34 @@
 
   function renderGridFullscreen() {
     el.appShell.classList.toggle("grid-fullscreen", state.gridFullscreen);
-    el.fullscreenBtn.textContent = state.gridFullscreen ? "نمای کامل: روشن" : "نمای کامل جدول";
+    setButtonLabel(el.fullscreenBtn, state.gridFullscreen ? "minimize" : "fullscreen", state.gridFullscreen ? "نمای کامل: روشن" : "نمای کامل جدول");
+  }
+
+  function setButtonLabel(button, iconName, label) {
+    if (!button) return;
+    button.innerHTML = `<span class="btn-icon">${icons[iconName] || ""}</span><span>${escapeHtml(label)}</span>`;
+    button.setAttribute("aria-label", label);
+    button.title = label;
+  }
+
+  function scrollActiveMenuIntoView() {
+    requestAnimationFrame(() => {
+      el.systemMenu.querySelector(".menu-btn.active")?.scrollIntoView({
+        block: "nearest",
+        inline: "nearest",
+        behavior: "smooth"
+      });
+    });
+  }
+
+  function scrollActiveTabIntoView() {
+    requestAnimationFrame(() => {
+      el.moduleTabs.querySelector(".tab-btn.active")?.scrollIntoView({
+        block: "nearest",
+        inline: "center",
+        behavior: "smooth"
+      });
+    });
   }
 
   function exportVisibleRows() {
@@ -589,6 +812,16 @@
 
   function setLoading(message) {
     el.tableBody.innerHTML = `<tr><td class="empty-cell">${escapeHtml(message)}</td></tr>`;
+  }
+
+  function sortCatalog(catalog) {
+    const order = new Map([["acc", 0], ["rpa", 1], ["inv", 2], ["sls", 3], ["gnr", 4], ["fmk", 5]]);
+    return [...(catalog || [])].sort((a, b) => {
+      const left = order.has(a.key) ? order.get(a.key) : 50;
+      const right = order.has(b.key) ? order.get(b.key) : 50;
+      if (left !== right) return left - right;
+      return String(a.key || "").localeCompare(String(b.key || ""));
+    });
   }
 
   function getActiveModule() {
@@ -647,10 +880,10 @@
   }
 
   function inferTableGroup(tableName) {
-    if (/Voucher|Operation|Receipt|Payment|Cheque|Settlement|Bill|Balance|Reconciliation|Refund|History/i.test(tableName)) {
+    if (/Voucher|Operation|Receipt|Payment|Cheque|Settlement|Bill|Balance|Reconciliation|Refund|History|Stock|Inventory|Receipt|Delivery|Transfer|Adjustment|Pricing|Taking|Tracking|Weighing|Turnover|Profit|Loss|Liquidity|Commitment|Journal/i.test(tableName)) {
       return "عملیات";
     }
-    if (/Account|Bank|Branch|Cash|Pos|Type|Topic|DL|Specification|Book/i.test(tableName)) {
+    if (/Account|Bank|Branch|Cash|Pos|Type|Topic|DL|Specification|Book|Item|Warehouse|Unit|Category|Scale|CostCenter|Ledger|CashFlow/i.test(tableName)) {
       return "اطلاعات پایه";
     }
     return "سایر";
@@ -683,11 +916,41 @@
     label = label.replace(/\bHas\b/g, "دارای");
     label = label.replace(/\bBase\b/g, "مبنا");
     label = label.replace(/\bParent\b/g, "والد");
+    label = label.replace(/\bCost Center\b/g, "مرکز هزینه");
+    label = label.replace(/\bDetail Account\b/g, "حساب تفصیلی");
+    label = label.replace(/\bTrial Balance\b/g, "تراز آزمایشی");
+    label = label.replace(/\bProfit Loss\b/g, "سود و زیان");
+    label = label.replace(/\bCash Flow\b/g, "جریان نقدی");
+    label = label.replace(/\bPayable Commitment\b/g, "تعهد پرداختنی");
+    label = label.replace(/\bReceivable Commitment\b/g, "تعهد دریافتنی");
+    label = label.replace(/\bBank Bill\b/g, "صورت حساب بانکی");
+    label = label.replace(/\bCheque Book\b/g, "دسته چک");
+    label = label.replace(/\bPetty Cash\b/g, "تنخواه گردان");
+    label = label.replace(/\bStock Taking\b/g, "انبارگردانی");
+    label = label.replace(/\bInventory Voucher\b/g, "سند انبار");
+    label = label.replace(/\bInventory Receipt\b/g, "رسید انبار");
+    label = label.replace(/\bInventory Delivery\b/g, "حواله انبار");
     label = label.replace(/\bAccount\b/g, "حساب");
+    label = label.replace(/\bLedger\b/g, "دفتر حسابداری");
+    label = label.replace(/\bJournal\b/g, "دفتر روزنامه");
     label = label.replace(/\bBank\b/g, "بانک");
+    label = label.replace(/\bCash\b/g, "صندوق");
     label = label.replace(/\bCheque\b/g, "چک");
+    label = label.replace(/\bPayment\b/g, "پرداخت");
+    label = label.replace(/\bReceipt\b/g, "دریافت");
+    label = label.replace(/\bCommitment\b/g, "تعهد");
+    label = label.replace(/\bLiquidity\b/g, "نقدینگی");
     label = label.replace(/\bVoucher\b/g, "سند");
-    label = label.replace(/\bItem\b/g, "آیتم");
+    label = label.replace(/\bItem\b/g, "کالا");
+    label = label.replace(/\bWarehouse\b/g, "انبار");
+    label = label.replace(/\bInventory\b/g, "انبارداری");
+    label = label.replace(/\bStock\b/g, "موجودی");
+    label = label.replace(/\bDelivery\b/g, "حواله");
+    label = label.replace(/\bTransfer\b/g, "انتقال");
+    label = label.replace(/\bTracking\b/g, "ردیابی");
+    label = label.replace(/\bWeighing\b/g, "توزین");
+    label = label.replace(/\bWeight\b/g, "وزن");
+    label = label.replace(/\bScale\b/g, "باسکول");
     label = label.replace(/\bParty\b/g, "شخص");
     label = label.replace(/\bCustomer\b/g, "مشتری");
     label = label.replace(/\bProduct\b/g, "محصول");
