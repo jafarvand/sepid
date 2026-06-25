@@ -17,7 +17,7 @@
     cnt: ["سیستم پیمانکاری و قراردادها", "قرارداد، پروژه، ضمانت نامه، صورت وضعیت، تعدیل، دریافت و پرداخت پیمان"],
     msg: ["پیام ها", "پیام ها و اعلان های سیستم"],
     scd: ["زمان بندی", "برنامه ها و زمان بندی عملیات"],
-    wko: ["تولید", "فرمول، سفارش و عملیات تولید"],
+    wko: ["سیستم تولید", "فرمول ساخت، مواد اولیه، سفارش تولید، مراحل تولید، ورود محصول و قیمت تمام شده"],
     pos: ["فروشگاهی", "اطلاعات و عملیات فروشگاهی"]
   };
   const moduleIcons = {
@@ -230,6 +230,29 @@
     TrackingId: "شناسه ردیابی",
     TrackingTitle: "عنوان ردیابی",
     BatchNumber: "بچ نامبر",
+    FormulaId: "شناسه فرمول ساخت",
+    FormulaRef: "فرمول ساخت",
+    FormulaCode: "کد فرمول ساخت",
+    FormulaTitle: "عنوان فرمول ساخت",
+    BOMRef: "فرمول مواد",
+    BOMId: "شناسه فرمول مواد",
+    WorkOrderRef: "دستور کار تولید",
+    WorkOrderId: "شناسه دستور کار تولید",
+    ProductionOrderRef: "سفارش تولید",
+    ProductionOrderId: "شناسه سفارش تولید",
+    ProductionStageRef: "مرحله تولید",
+    ProductionStageId: "شناسه مرحله تولید",
+    RoutingRef: "مسیر تولید",
+    RoutingId: "شناسه مسیر تولید",
+    MaterialRef: "مواد اولیه",
+    MaterialId: "شناسه مواد اولیه",
+    MaterialIssueRef: "خروج مواد",
+    MaterialIssueId: "شناسه خروج مواد",
+    ProductReceiptRef: "ورود محصول",
+    ProductReceiptId: "شناسه ورود محصول",
+    ProductionCost: "قیمت تمام شده تولید",
+    WastageQuantity: "ضایعات",
+    ScrapQuantity: "ضایعات",
     SerialNumber: "سری ساخت",
     ExpirationDate: "تاریخ انقضا",
     ScaleRef: "باسکول",
@@ -532,6 +555,23 @@
     "CNT.ContractReceipt": ["دریافت های قرارداد", "عملیات"],
     "CNT.ContractPayment": ["پرداخت های قرارداد", "عملیات"],
     "CNT.ContractSettlement": ["تسویه قرارداد", "عملیات"],
+    "WKO.Formula": ["فرمول های ساخت", "اطلاعات پایه"],
+    "WKO.FormulaItem": ["اقلام فرمول ساخت", "اطلاعات پایه"],
+    "WKO.BOM": ["فرمول مواد", "اطلاعات پایه"],
+    "WKO.BOMItem": ["اقلام فرمول مواد", "اطلاعات پایه"],
+    "WKO.Routing": ["مسیرهای تولید", "اطلاعات پایه"],
+    "WKO.RoutingItem": ["مراحل مسیر تولید", "اطلاعات پایه"],
+    "WKO.ProductionStage": ["مراحل تولید", "اطلاعات پایه"],
+    "WKO.WorkOrder": ["دستور کار تولید", "عملیات"],
+    "WKO.WorkOrderItem": ["اقلام دستور کار تولید", "عملیات"],
+    "WKO.ProductionOrder": ["سفارش های تولید", "عملیات"],
+    "WKO.ProductionOrderItem": ["اقلام سفارش تولید", "عملیات"],
+    "WKO.MaterialIssue": ["خروج مواد اولیه", "عملیات"],
+    "WKO.MaterialIssueItem": ["اقلام خروج مواد اولیه", "عملیات"],
+    "WKO.ProductReceipt": ["ورود محصول تولید شده", "عملیات"],
+    "WKO.ProductReceiptItem": ["اقلام ورود محصول تولید شده", "عملیات"],
+    "WKO.ProductionCost": ["قیمت تمام شده تولید", "عملیات"],
+    "WKO.ProductionCostItem": ["اقلام قیمت تمام شده تولید", "عملیات"],
     "FMK.FiscalYear": ["سال مالی", "اطلاعات پایه وابسته"],
     "GNR.Currency": ["ارزها", "اطلاعات پایه وابسته"],
     "GNR.Party": ["طرف حساب ها", "اطلاعات پایه وابسته"],
@@ -1076,10 +1116,10 @@
   }
 
   function inferTableGroup(tableName) {
-    if (/Voucher|Operation|Receipt|Payment|Cheque|Settlement|Bill|Balance|Reconciliation|Refund|History|Stock|Inventory|Receipt|Delivery|Transfer|Adjustment|Pricing|Taking|Tracking|Weighing|Turnover|Profit|Loss|Liquidity|Commitment|Journal|Invoice|Order|Quotation|Return|Commission|Report|Payroll|WorkTime|Leave|Mission|PaySlip|Loan|Acquisition|Depreciation|Disposal|Repair|Revaluation|Sale|Tender|Agreement|Guarantee|Statement/i.test(tableName)) {
+    if (/Voucher|Operation|Receipt|Payment|Cheque|Settlement|Bill|Balance|Reconciliation|Refund|History|Stock|Inventory|Receipt|Delivery|Transfer|Adjustment|Pricing|Taking|Tracking|Weighing|Turnover|Profit|Loss|Liquidity|Commitment|Journal|Invoice|Order|Quotation|Return|Commission|Report|Payroll|WorkTime|Leave|Mission|PaySlip|Loan|Acquisition|Depreciation|Disposal|Repair|Revaluation|Sale|Tender|Agreement|Guarantee|Statement|WorkOrder|ProductionOrder|MaterialIssue|ProductReceipt|ProductionCost/i.test(tableName)) {
       return "عملیات";
     }
-    if (/Account|Bank|Branch|Cash|Pos|Type|Topic|DL|Specification|Book|Item|Warehouse|Unit|Category|Scale|CostCenter|Ledger|CashFlow|Customer|Sales|Price|Discount|Marketer|Visitor|Person|Area|Office|Employee|Personnel|Employment|Salary|Benefit|Deduction|Insurance|Tax|Asset|Location|Method|Contract|Project|Party/i.test(tableName)) {
+    if (/Account|Bank|Branch|Cash|Pos|Type|Topic|DL|Specification|Book|Item|Warehouse|Unit|Category|Scale|CostCenter|Ledger|CashFlow|Customer|Sales|Price|Discount|Marketer|Visitor|Person|Area|Office|Employee|Personnel|Employment|Salary|Benefit|Deduction|Insurance|Tax|Asset|Location|Method|Contract|Project|Party|Formula|BOM|Routing|Stage|Material|Product/i.test(tableName)) {
       return "اطلاعات پایه";
     }
     return "سایر";
@@ -1150,6 +1190,12 @@
     label = label.replace(/\bContract Type\b/g, "نوع قرارداد");
     label = label.replace(/\bProgress Statement\b/g, "صورت وضعیت");
     label = label.replace(/\bContract Settlement\b/g, "تسویه قرارداد");
+    label = label.replace(/\bWork Order\b/g, "دستور کار تولید");
+    label = label.replace(/\bProduction Order\b/g, "سفارش تولید");
+    label = label.replace(/\bProduction Stage\b/g, "مرحله تولید");
+    label = label.replace(/\bMaterial Issue\b/g, "خروج مواد");
+    label = label.replace(/\bProduct Receipt\b/g, "ورود محصول");
+    label = label.replace(/\bProduction Cost\b/g, "قیمت تمام شده تولید");
     label = label.replace(/\bAccount\b/g, "حساب");
     label = label.replace(/\bLedger\b/g, "دفتر حسابداری");
     label = label.replace(/\bJournal\b/g, "دفتر روزنامه");
@@ -1207,6 +1253,14 @@
     label = label.replace(/\bAgreement\b/g, "موافقت نامه");
     label = label.replace(/\bGuarantee\b/g, "ضمانت نامه");
     label = label.replace(/\bStatement\b/g, "صورت وضعیت");
+    label = label.replace(/\bFormula\b/g, "فرمول ساخت");
+    label = label.replace(/\bBOM\b/g, "فرمول مواد");
+    label = label.replace(/\bRouting\b/g, "مسیر تولید");
+    label = label.replace(/\bStage\b/g, "مرحله");
+    label = label.replace(/\bMaterial\b/g, "مواد اولیه");
+    label = label.replace(/\bProduction\b/g, "تولید");
+    label = label.replace(/\bWastage\b/g, "ضایعات");
+    label = label.replace(/\bScrap\b/g, "ضایعات");
     label = label.replace(/\bProduct\b/g, "محصول");
     label = label.replace(/\bCurrency\b/g, "ارز");
     label = label.replace(/\bFiscalYear\b/g, "سال مالی");
