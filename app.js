@@ -15,7 +15,7 @@
     pay: ["سیستم حقوق و دستمزد", "پرسنل، احکام، کارکرد، مرخصی، ماموریت، مالیات، بیمه و پرداخت حقوق"],
     ast: ["سیستم دارایی ثابت", "دارایی ها، گروه دارایی، محل استقرار، تحصیل، استهلاک، انتقال و خروج دارایی"],
     cnt: ["سیستم پیمانکاری و قراردادها", "قرارداد، پروژه، ضمانت نامه، صورت وضعیت، تعدیل، دریافت و پرداخت پیمان"],
-    msg: ["پیام ها", "پیام ها و اعلان های سیستم"],
+    msg: ["سیستم مدیریت پیام", "پیامک، اعلان، قالب پیام، صندوق ورودی و خروجی، صف ارسال و وضعیت تحویل"],
     scd: ["زمان بندی", "برنامه ها و زمان بندی عملیات"],
     wko: ["سیستم تولید", "فرمول ساخت، مواد اولیه، سفارش تولید، مراحل تولید، ورود محصول و قیمت تمام شده"],
     pos: ["سیستم فروشگاهی", "فروشگاه، شعبه، صندوق فروش، صندوق دار، شیفت، رسید فروش، بارکد و عملیات فروشگاهی"]
@@ -386,6 +386,24 @@
     Phone: "تلفن",
     Mobile: "موبایل",
     Email: "ایمیل",
+    MessageId: "شناسه پیام",
+    MessageRef: "پیام",
+    MessageTitle: "عنوان پیام",
+    MessageText: "متن پیام",
+    NotificationId: "شناسه اعلان",
+    NotificationRef: "اعلان",
+    SmsId: "شناسه پیامک",
+    SmsRef: "پیامک",
+    SMSId: "شناسه پیامک",
+    SMSRef: "پیامک",
+    TemplateId: "شناسه قالب پیام",
+    TemplateRef: "قالب پیام",
+    QueueId: "شناسه صف ارسال",
+    QueueRef: "صف ارسال",
+    DeliveryStatus: "وضعیت تحویل",
+    SendDate: "تاریخ ارسال",
+    Sender: "فرستنده",
+    Receiver: "گیرنده",
     Fax: "نمابر",
     PostalCode: "کد پستی",
     Address: "نشانی",
@@ -660,6 +678,17 @@
     "FMK.Numbering": ["شماره گذاری اسناد", "اطلاعات پایه"],
     "FMK.AuditLog": ["سوابق تغییرات", "عملیات"],
     "FMK.Log": ["رخدادهای سیستم", "عملیات"],
+    "MSG.Message": ["پیام ها", "عملیات"],
+    "MSG.Notification": ["اعلان ها", "عملیات"],
+    "MSG.Sms": ["پیامک ها", "عملیات"],
+    "MSG.SMS": ["پیامک ها", "عملیات"],
+    "MSG.Email": ["ایمیل ها", "عملیات"],
+    "MSG.Template": ["قالب های پیام", "اطلاعات پایه"],
+    "MSG.MessageTemplate": ["قالب های پیام", "اطلاعات پایه"],
+    "MSG.Inbox": ["صندوق ورودی", "عملیات"],
+    "MSG.Outbox": ["صندوق خروجی", "عملیات"],
+    "MSG.Queue": ["صف ارسال", "عملیات"],
+    "MSG.Delivery": ["وضعیت تحویل پیام", "عملیات"],
     "GNR.Currency": ["ارزها", "اطلاعات پایه وابسته"],
     "GNR.ExchangeRate": ["نرخ ارز", "اطلاعات پایه"],
     "GNR.Party": ["طرف حساب ها", "اطلاعات پایه وابسته"],
@@ -1212,10 +1241,10 @@
   }
 
   function inferTableGroup(tableName) {
-    if (/Voucher|Operation|Receipt|Payment|Cheque|Settlement|Bill|Balance|Reconciliation|Refund|History|Stock|Inventory|Receipt|Delivery|Transfer|Adjustment|Pricing|Taking|Tracking|Weighing|Turnover|Profit|Loss|Liquidity|Commitment|Journal|Invoice|Order|Quotation|Return|Commission|Report|Payroll|WorkTime|Leave|Mission|PaySlip|Loan|Acquisition|Depreciation|Disposal|Repair|Revaluation|Sale|Tender|Agreement|Guarantee|Statement|WorkOrder|ProductionOrder|MaterialIssue|ProductReceipt|ProductionCost|Shift|DailySale|CashierSettlement|Audit|Log/i.test(tableName)) {
+    if (/Voucher|Operation|Receipt|Payment|Cheque|Settlement|Bill|Balance|Reconciliation|Refund|History|Stock|Inventory|Receipt|Delivery|Transfer|Adjustment|Pricing|Taking|Tracking|Weighing|Turnover|Profit|Loss|Liquidity|Commitment|Journal|Invoice|Order|Quotation|Return|Commission|Report|Payroll|WorkTime|Leave|Mission|PaySlip|Loan|Acquisition|Depreciation|Disposal|Repair|Revaluation|Sale|Tender|Agreement|Guarantee|Statement|WorkOrder|ProductionOrder|MaterialIssue|ProductReceipt|ProductionCost|Shift|DailySale|CashierSettlement|Audit|Log|Message|Notification|Sms|SMS|Email|Inbox|Outbox|Queue|Delivery/i.test(tableName)) {
       return "عملیات";
     }
-    if (/Account|Bank|Branch|Cash|Pos|Type|Topic|DL|Specification|Book|Item|Warehouse|Unit|Category|Scale|CostCenter|Ledger|CashFlow|Customer|Sales|Price|Discount|Marketer|Visitor|Person|Area|Office|Employee|Personnel|Employment|Salary|Benefit|Deduction|Insurance|Tax|Asset|Location|Method|Contract|Project|Party|Formula|BOM|Routing|Stage|Material|Product|Store|Cashier|Terminal|Barcode|Register|Currency|Exchange|Contact|Address|Country|Province|City|FiscalPeriod|Company|User|Role|Permission|Access|Setting|Numbering/i.test(tableName)) {
+    if (/Account|Bank|Branch|Cash|Pos|Type|Topic|DL|Specification|Book|Item|Warehouse|Unit|Category|Scale|CostCenter|Ledger|CashFlow|Customer|Sales|Price|Discount|Marketer|Visitor|Person|Area|Office|Employee|Personnel|Employment|Salary|Benefit|Deduction|Insurance|Tax|Asset|Location|Method|Contract|Project|Party|Formula|BOM|Routing|Stage|Material|Product|Store|Cashier|Terminal|Barcode|Register|Currency|Exchange|Contact|Address|Country|Province|City|FiscalPeriod|Company|User|Role|Permission|Access|Setting|Numbering|Template/i.test(tableName)) {
       return "اطلاعات پایه";
     }
     return "سایر";
@@ -1303,6 +1332,8 @@
     label = label.replace(/\bAudit Log\b/g, "سوابق تغییرات");
     label = label.replace(/\bUser Role\b/g, "نقش کاربر");
     label = label.replace(/\bRole Permission\b/g, "دسترسی نقش");
+    label = label.replace(/\bMessage Template\b/g, "قالب پیام");
+    label = label.replace(/\bDelivery Status\b/g, "وضعیت تحویل");
     label = label.replace(/\bAccount\b/g, "حساب");
     label = label.replace(/\bLedger\b/g, "دفتر حسابداری");
     label = label.replace(/\bJournal\b/g, "دفتر روزنامه");
@@ -1387,6 +1418,16 @@
     label = label.replace(/\bAccess\b/g, "دسترسی");
     label = label.replace(/\bSetting\b/g, "تنظیمات");
     label = label.replace(/\bNumbering\b/g, "شماره گذاری");
+    label = label.replace(/\bMessage\b/g, "پیام");
+    label = label.replace(/\bNotification\b/g, "اعلان");
+    label = label.replace(/\bSms\b/g, "پیامک");
+    label = label.replace(/\bSMS\b/g, "پیامک");
+    label = label.replace(/\bTemplate\b/g, "قالب");
+    label = label.replace(/\bInbox\b/g, "صندوق ورودی");
+    label = label.replace(/\bOutbox\b/g, "صندوق خروجی");
+    label = label.replace(/\bQueue\b/g, "صف");
+    label = label.replace(/\bSender\b/g, "فرستنده");
+    label = label.replace(/\bReceiver\b/g, "گیرنده");
     label = label.replace(/\bProduct\b/g, "محصول");
     label = label.replace(/\bCurrency\b/g, "ارز");
     label = label.replace(/\bFiscalYear\b/g, "سال مالی");
