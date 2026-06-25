@@ -16,7 +16,7 @@
     ast: ["سیستم دارایی ثابت", "دارایی ها، گروه دارایی، محل استقرار، تحصیل، استهلاک، انتقال و خروج دارایی"],
     cnt: ["سیستم پیمانکاری و قراردادها", "قرارداد، پروژه، ضمانت نامه، صورت وضعیت، تعدیل، دریافت و پرداخت پیمان"],
     msg: ["سیستم مدیریت پیام", "پیامک، اعلان، قالب پیام، صندوق ورودی و خروجی، صف ارسال و وضعیت تحویل"],
-    scd: ["زمان بندی", "برنامه ها و زمان بندی عملیات"],
+    scd: ["سیستم زمان بندی", "تقویم کاری، برنامه زمان بندی، وظایف، یادآورها، اجرای دوره ای و سوابق اجرا"],
     wko: ["سیستم تولید", "فرمول ساخت، مواد اولیه، سفارش تولید، مراحل تولید، ورود محصول و قیمت تمام شده"],
     pos: ["سیستم فروشگاهی", "فروشگاه، شعبه، صندوق فروش، صندوق دار، شیفت، رسید فروش، بارکد و عملیات فروشگاهی"]
   };
@@ -404,6 +404,21 @@
     SendDate: "تاریخ ارسال",
     Sender: "فرستنده",
     Receiver: "گیرنده",
+    ScheduleId: "شناسه برنامه زمان بندی",
+    ScheduleRef: "برنامه زمان بندی",
+    ScheduleTitle: "عنوان برنامه زمان بندی",
+    CalendarId: "شناسه تقویم کاری",
+    CalendarRef: "تقویم کاری",
+    TaskId: "شناسه وظیفه",
+    TaskRef: "وظیفه",
+    JobId: "شناسه کار زمان بندی",
+    JobRef: "کار زمان بندی",
+    ReminderId: "شناسه یادآور",
+    ReminderRef: "یادآور",
+    Frequency: "تناوب",
+    RunDate: "تاریخ اجرا",
+    RunStatus: "وضعیت اجرا",
+    NextRunDate: "تاریخ اجرای بعدی",
     Fax: "نمابر",
     PostalCode: "کد پستی",
     Address: "نشانی",
@@ -689,6 +704,14 @@
     "MSG.Outbox": ["صندوق خروجی", "عملیات"],
     "MSG.Queue": ["صف ارسال", "عملیات"],
     "MSG.Delivery": ["وضعیت تحویل پیام", "عملیات"],
+    "SCD.Calendar": ["تقویم کاری", "اطلاعات پایه"],
+    "SCD.Schedule": ["برنامه های زمان بندی", "اطلاعات پایه"],
+    "SCD.Task": ["وظایف زمان بندی", "اطلاعات پایه"],
+    "SCD.Job": ["کارهای زمان بندی", "عملیات"],
+    "SCD.Reminder": ["یادآورها", "عملیات"],
+    "SCD.RunHistory": ["سوابق اجرا", "عملیات"],
+    "SCD.ExecutionLog": ["گزارش اجرای زمان بندی", "عملیات"],
+    "SCD.Frequency": ["تناوب اجرا", "اطلاعات پایه"],
     "GNR.Currency": ["ارزها", "اطلاعات پایه وابسته"],
     "GNR.ExchangeRate": ["نرخ ارز", "اطلاعات پایه"],
     "GNR.Party": ["طرف حساب ها", "اطلاعات پایه وابسته"],
@@ -1241,10 +1264,10 @@
   }
 
   function inferTableGroup(tableName) {
-    if (/Voucher|Operation|Receipt|Payment|Cheque|Settlement|Bill|Balance|Reconciliation|Refund|History|Stock|Inventory|Receipt|Delivery|Transfer|Adjustment|Pricing|Taking|Tracking|Weighing|Turnover|Profit|Loss|Liquidity|Commitment|Journal|Invoice|Order|Quotation|Return|Commission|Report|Payroll|WorkTime|Leave|Mission|PaySlip|Loan|Acquisition|Depreciation|Disposal|Repair|Revaluation|Sale|Tender|Agreement|Guarantee|Statement|WorkOrder|ProductionOrder|MaterialIssue|ProductReceipt|ProductionCost|Shift|DailySale|CashierSettlement|Audit|Log|Message|Notification|Sms|SMS|Email|Inbox|Outbox|Queue|Delivery/i.test(tableName)) {
+    if (/Voucher|Operation|Receipt|Payment|Cheque|Settlement|Bill|Balance|Reconciliation|Refund|History|Stock|Inventory|Receipt|Delivery|Transfer|Adjustment|Pricing|Taking|Tracking|Weighing|Turnover|Profit|Loss|Liquidity|Commitment|Journal|Invoice|Order|Quotation|Return|Commission|Report|Payroll|WorkTime|Leave|Mission|PaySlip|Loan|Acquisition|Depreciation|Disposal|Repair|Revaluation|Sale|Tender|Agreement|Guarantee|Statement|WorkOrder|ProductionOrder|MaterialIssue|ProductReceipt|ProductionCost|Shift|DailySale|CashierSettlement|Audit|Log|Message|Notification|Sms|SMS|Email|Inbox|Outbox|Queue|Delivery|Job|Run|Execution|Reminder/i.test(tableName)) {
       return "عملیات";
     }
-    if (/Account|Bank|Branch|Cash|Pos|Type|Topic|DL|Specification|Book|Item|Warehouse|Unit|Category|Scale|CostCenter|Ledger|CashFlow|Customer|Sales|Price|Discount|Marketer|Visitor|Person|Area|Office|Employee|Personnel|Employment|Salary|Benefit|Deduction|Insurance|Tax|Asset|Location|Method|Contract|Project|Party|Formula|BOM|Routing|Stage|Material|Product|Store|Cashier|Terminal|Barcode|Register|Currency|Exchange|Contact|Address|Country|Province|City|FiscalPeriod|Company|User|Role|Permission|Access|Setting|Numbering|Template/i.test(tableName)) {
+    if (/Account|Bank|Branch|Cash|Pos|Type|Topic|DL|Specification|Book|Item|Warehouse|Unit|Category|Scale|CostCenter|Ledger|CashFlow|Customer|Sales|Price|Discount|Marketer|Visitor|Person|Area|Office|Employee|Personnel|Employment|Salary|Benefit|Deduction|Insurance|Tax|Asset|Location|Method|Contract|Project|Party|Formula|BOM|Routing|Stage|Material|Product|Store|Cashier|Terminal|Barcode|Register|Currency|Exchange|Contact|Address|Country|Province|City|FiscalPeriod|Company|User|Role|Permission|Access|Setting|Numbering|Template|Schedule|Calendar|Task|Frequency/i.test(tableName)) {
       return "اطلاعات پایه";
     }
     return "سایر";
@@ -1334,6 +1357,9 @@
     label = label.replace(/\bRole Permission\b/g, "دسترسی نقش");
     label = label.replace(/\bMessage Template\b/g, "قالب پیام");
     label = label.replace(/\bDelivery Status\b/g, "وضعیت تحویل");
+    label = label.replace(/\bRun History\b/g, "سوابق اجرا");
+    label = label.replace(/\bExecution Log\b/g, "گزارش اجرا");
+    label = label.replace(/\bNext Run\b/g, "اجرای بعدی");
     label = label.replace(/\bAccount\b/g, "حساب");
     label = label.replace(/\bLedger\b/g, "دفتر حسابداری");
     label = label.replace(/\bJournal\b/g, "دفتر روزنامه");
@@ -1428,6 +1454,14 @@
     label = label.replace(/\bQueue\b/g, "صف");
     label = label.replace(/\bSender\b/g, "فرستنده");
     label = label.replace(/\bReceiver\b/g, "گیرنده");
+    label = label.replace(/\bSchedule\b/g, "زمان بندی");
+    label = label.replace(/\bCalendar\b/g, "تقویم");
+    label = label.replace(/\bTask\b/g, "وظیفه");
+    label = label.replace(/\bJob\b/g, "کار");
+    label = label.replace(/\bReminder\b/g, "یادآور");
+    label = label.replace(/\bFrequency\b/g, "تناوب");
+    label = label.replace(/\bExecution\b/g, "اجرا");
+    label = label.replace(/\bRun\b/g, "اجرا");
     label = label.replace(/\bProduct\b/g, "محصول");
     label = label.replace(/\bCurrency\b/g, "ارز");
     label = label.replace(/\bFiscalYear\b/g, "سال مالی");
