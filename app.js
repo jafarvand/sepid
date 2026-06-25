@@ -8,7 +8,7 @@
     acc: ["سیستم حسابداری", "سرفصل حساب ها، حساب های تفصیلی، اسناد حسابداری، گردش حساب ها و گزارش سود و زیان"],
     rpa: ["سیستم دریافت و پرداخت", "وجوه نقد، بانک، صندوق، چک، نقدینگی، دریافت و پرداخت و تعهدات دریافتنی و پرداختنی"],
     inv: ["سیستم انبارداری", "کالا، انبار، موجودی، ورود و خروج کالا، ردیابی و توزین"],
-    sls: ["فروش", "مشتری، سفارش، فاکتور و برگشت فروش"],
+    sls: ["سیستم مشتریان و فروش", "مشتریان، پیش فاکتور، سفارش، فاکتور فروش، برگشت فروش، تخفیف و پورسانت"],
     pty: ["اشخاص", "طرف حساب ها و اطلاعات پایه اشخاص"],
     gnr: ["عمومی", "اطلاعات پایه و تنظیمات مشترک"],
     fmk: ["چارچوب سیستم", "کاربران، نقش ها، تنظیمات و زیرساخت"],
@@ -166,6 +166,29 @@
     Rate: "نرخ",
     PartyRef: "طرف حساب",
     CustomerPartyRef: "مشتری",
+    CustomerId: "شناسه مشتری",
+    CustomerRef: "مشتری",
+    CustomerCode: "کد مشتری",
+    CustomerTitle: "عنوان مشتری",
+    CustomerGroupRef: "گروه مشتری",
+    SalesAreaRef: "منطقه فروش",
+    SalesAreaId: "شناسه منطقه فروش",
+    SalesOfficeRef: "مرکز فروش",
+    SalesOfficeId: "شناسه مرکز فروش",
+    SalesTypeRef: "نوع فروش",
+    SalesTypeId: "شناسه نوع فروش",
+    SalesPersonRef: "فروشنده",
+    SalesPersonId: "شناسه فروشنده",
+    MarketerRef: "بازاریاب",
+    MarketerId: "شناسه بازاریاب",
+    VisitorRef: "ویزیتور",
+    VisitorId: "شناسه ویزیتور",
+    QuotationRef: "پیش فاکتور",
+    QuotationId: "شناسه پیش فاکتور",
+    QuotationItemId: "شناسه قلم پیش فاکتور",
+    OrderRef: "سفارش فروش",
+    OrderId: "شناسه سفارش فروش",
+    OrderItemId: "شناسه قلم سفارش فروش",
     SupplierPartyRef: "تامین کننده",
     ItemRef: "کالا/خدمت",
     ItemId: "شناسه کالا/خدمت",
@@ -244,6 +267,24 @@
     InvoiceId: "شناسه فاکتور",
     InvoiceRef: "فاکتور",
     InvoiceItemId: "شناسه آیتم فاکتور",
+    InvoiceNumber: "شماره فاکتور",
+    InvoiceDate: "تاریخ فاکتور",
+    ReturnedInvoiceRef: "برگشت فروش",
+    ReturnedInvoiceId: "شناسه برگشت فروش",
+    ReturnedInvoiceItemId: "شناسه قلم برگشت فروش",
+    ReturnInvoiceRef: "برگشت فروش",
+    ReturnInvoiceId: "شناسه برگشت فروش",
+    ReturnInvoiceItemId: "شناسه قلم برگشت فروش",
+    PriceListRef: "فهرست قیمت",
+    PriceListId: "شناسه فهرست قیمت",
+    PriceListItemId: "شناسه قلم فهرست قیمت",
+    DiscountRef: "تخفیف",
+    DiscountId: "شناسه تخفیف",
+    DiscountItemId: "شناسه قلم تخفیف",
+    DiscountPercent: "درصد تخفیف",
+    Addition: "اضافات",
+    AdditionAmount: "مبلغ اضافات",
+    NetAmount: "مبلغ خالص",
     CommissionCalculationId: "شناسه محاسبه پورسانت",
     CommissionCalculationRef: "محاسبه پورسانت",
     CommissionCalculationItemId: "شناسه آیتم محاسبه پورسانت",
@@ -364,10 +405,32 @@
     "GNR.Location": ["مناطق و محل ها", "اطلاعات پایه وابسته"],
     "GNR.DebitCreditNote": ["اعلامیه بدهکار/بستانکار", "عملیات وابسته"],
     "GNR.DebitCreditNoteItem": ["آیتم های اعلامیه بدهکار/بستانکار", "عملیات وابسته"],
-    "SLS.Invoice": ["فاکتورهای فروش", "عملیات وابسته"],
-    "SLS.InvoiceItem": ["آیتم های فاکتور فروش", "عملیات وابسته"],
-    "SLS.CommissionCalculation": ["محاسبات پورسانت", "عملیات وابسته"],
-    "SLS.CommissionCalculationItem": ["آیتم های محاسبه پورسانت", "عملیات وابسته"]
+    "SLS.Customer": ["مشتریان", "اطلاعات پایه"],
+    "SLS.CustomerGroup": ["گروه مشتریان", "اطلاعات پایه"],
+    "SLS.SalesArea": ["مناطق فروش", "اطلاعات پایه"],
+    "SLS.SalesOffice": ["مراکز فروش", "اطلاعات پایه"],
+    "SLS.SalesType": ["انواع فروش", "اطلاعات پایه"],
+    "SLS.SalesPerson": ["فروشندگان", "اطلاعات پایه"],
+    "SLS.Marketer": ["بازاریاب ها", "اطلاعات پایه"],
+    "SLS.Visitor": ["ویزیتورها", "اطلاعات پایه"],
+    "SLS.PriceList": ["فهرست قیمت", "اطلاعات پایه"],
+    "SLS.PriceListItem": ["اقلام فهرست قیمت", "اطلاعات پایه"],
+    "SLS.Discount": ["تخفیف ها", "اطلاعات پایه"],
+    "SLS.DiscountItem": ["اقلام تخفیف", "اطلاعات پایه"],
+    "SLS.Quotation": ["پیش فاکتورها", "عملیات"],
+    "SLS.QuotationItem": ["اقلام پیش فاکتور", "عملیات"],
+    "SLS.Order": ["سفارش های فروش", "عملیات"],
+    "SLS.OrderItem": ["اقلام سفارش فروش", "عملیات"],
+    "SLS.Invoice": ["فاکتورهای فروش", "عملیات"],
+    "SLS.InvoiceItem": ["اقلام فاکتور فروش", "عملیات"],
+    "SLS.ReturnedInvoice": ["برگشت از فروش", "عملیات"],
+    "SLS.ReturnedInvoiceItem": ["اقلام برگشت از فروش", "عملیات"],
+    "SLS.ReturnInvoice": ["برگشت فروش", "عملیات"],
+    "SLS.ReturnInvoiceItem": ["اقلام برگشت فروش", "عملیات"],
+    "SLS.CommissionCalculation": ["محاسبات پورسانت", "عملیات"],
+    "SLS.CommissionCalculationItem": ["اقلام محاسبه پورسانت", "عملیات"],
+    "SLS.SalesReport": ["گزارش فروش", "عملیات"],
+    "SLS.CustomerBalance": ["مانده مشتریان", "عملیات"]
   };
 
   const state = {
@@ -880,10 +943,10 @@
   }
 
   function inferTableGroup(tableName) {
-    if (/Voucher|Operation|Receipt|Payment|Cheque|Settlement|Bill|Balance|Reconciliation|Refund|History|Stock|Inventory|Receipt|Delivery|Transfer|Adjustment|Pricing|Taking|Tracking|Weighing|Turnover|Profit|Loss|Liquidity|Commitment|Journal/i.test(tableName)) {
+    if (/Voucher|Operation|Receipt|Payment|Cheque|Settlement|Bill|Balance|Reconciliation|Refund|History|Stock|Inventory|Receipt|Delivery|Transfer|Adjustment|Pricing|Taking|Tracking|Weighing|Turnover|Profit|Loss|Liquidity|Commitment|Journal|Invoice|Order|Quotation|Return|Commission|Report/i.test(tableName)) {
       return "عملیات";
     }
-    if (/Account|Bank|Branch|Cash|Pos|Type|Topic|DL|Specification|Book|Item|Warehouse|Unit|Category|Scale|CostCenter|Ledger|CashFlow/i.test(tableName)) {
+    if (/Account|Bank|Branch|Cash|Pos|Type|Topic|DL|Specification|Book|Item|Warehouse|Unit|Category|Scale|CostCenter|Ledger|CashFlow|Customer|Sales|Price|Discount|Marketer|Visitor|Person|Area|Office/i.test(tableName)) {
       return "اطلاعات پایه";
     }
     return "سایر";
@@ -930,6 +993,14 @@
     label = label.replace(/\bInventory Voucher\b/g, "سند انبار");
     label = label.replace(/\bInventory Receipt\b/g, "رسید انبار");
     label = label.replace(/\bInventory Delivery\b/g, "حواله انبار");
+    label = label.replace(/\bCustomer Group\b/g, "گروه مشتری");
+    label = label.replace(/\bSales Area\b/g, "منطقه فروش");
+    label = label.replace(/\bSales Office\b/g, "مرکز فروش");
+    label = label.replace(/\bSales Person\b/g, "فروشنده");
+    label = label.replace(/\bPrice List\b/g, "فهرست قیمت");
+    label = label.replace(/\bReturned Invoice\b/g, "برگشت فروش");
+    label = label.replace(/\bReturn Invoice\b/g, "برگشت فروش");
+    label = label.replace(/\bCommission Calculation\b/g, "محاسبه پورسانت");
     label = label.replace(/\bAccount\b/g, "حساب");
     label = label.replace(/\bLedger\b/g, "دفتر حسابداری");
     label = label.replace(/\bJournal\b/g, "دفتر روزنامه");
@@ -953,6 +1024,15 @@
     label = label.replace(/\bScale\b/g, "باسکول");
     label = label.replace(/\bParty\b/g, "شخص");
     label = label.replace(/\bCustomer\b/g, "مشتری");
+    label = label.replace(/\bSales\b/g, "فروش");
+    label = label.replace(/\bQuotation\b/g, "پیش فاکتور");
+    label = label.replace(/\bOrder\b/g, "سفارش");
+    label = label.replace(/\bInvoice\b/g, "فاکتور");
+    label = label.replace(/\bReturn\b/g, "برگشت");
+    label = label.replace(/\bDiscount\b/g, "تخفیف");
+    label = label.replace(/\bCommission\b/g, "پورسانت");
+    label = label.replace(/\bMarketer\b/g, "بازاریاب");
+    label = label.replace(/\bVisitor\b/g, "ویزیتور");
     label = label.replace(/\bProduct\b/g, "محصول");
     label = label.replace(/\bCurrency\b/g, "ارز");
     label = label.replace(/\bFiscalYear\b/g, "سال مالی");
