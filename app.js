@@ -10,7 +10,7 @@
     inv: ["سیستم انبارداری", "کالا، انبار، موجودی، ورود و خروج کالا، ردیابی و توزین"],
     sls: ["سیستم مشتریان و فروش", "مشتریان، پیش فاکتور، سفارش، فاکتور فروش، برگشت فروش، تخفیف و پورسانت"],
     pty: ["اشخاص", "طرف حساب ها و اطلاعات پایه اشخاص"],
-    gnr: ["عمومی", "اطلاعات پایه و تنظیمات مشترک"],
+    gnr: ["سیستم عمومی", "اطلاعات پایه مشترک، اشخاص، ارز، مناطق، نشانی، تماس، واحدها و اعلامیه ها"],
     fmk: ["چارچوب سیستم", "کاربران، نقش ها، تنظیمات و زیرساخت"],
     pay: ["سیستم حقوق و دستمزد", "پرسنل، احکام، کارکرد، مرخصی، ماموریت، مالیات، بیمه و پرداخت حقوق"],
     ast: ["سیستم دارایی ثابت", "دارایی ها، گروه دارایی، محل استقرار، تحصیل، استهلاک، انتقال و خروج دارایی"],
@@ -362,9 +362,27 @@
     EconomicCode: "کد اقتصادی",
     Phone: "تلفن",
     Mobile: "موبایل",
+    Email: "ایمیل",
+    Fax: "نمابر",
+    PostalCode: "کد پستی",
     Address: "نشانی",
+    AddressRef: "نشانی",
+    AddressId: "شناسه نشانی",
+    ContactRef: "اطلاعات تماس",
+    ContactId: "شناسه اطلاعات تماس",
+    CountryRef: "کشور",
+    CountryId: "شناسه کشور",
+    ProvinceRef: "استان",
+    ProvinceId: "شناسه استان",
+    CityRef: "شهر",
+    CityId: "شناسه شهر",
     LocationId: "شناسه محل",
     ParentLocationRef: "محل والد",
+    ExchangeRateDate: "تاریخ نرخ ارز",
+    BaseCurrencyRef: "ارز پایه",
+    DebitCreditNoteRef: "اعلامیه بدهکار/بستانکار",
+    DebitCreditNoteNumber: "شماره اعلامیه",
+    DebitCreditNoteDate: "تاریخ اعلامیه",
     AssetId: "شناسه دارایی",
     AssetRef: "دارایی",
     AssetCode: "کد دارایی",
@@ -608,8 +626,17 @@
     "POS.CashierSettlement": ["تسویه صندوق دار", "عملیات"],
     "FMK.FiscalYear": ["سال مالی", "اطلاعات پایه وابسته"],
     "GNR.Currency": ["ارزها", "اطلاعات پایه وابسته"],
+    "GNR.ExchangeRate": ["نرخ ارز", "اطلاعات پایه"],
     "GNR.Party": ["طرف حساب ها", "اطلاعات پایه وابسته"],
+    "GNR.PartyGroup": ["گروه طرف حساب ها", "اطلاعات پایه"],
+    "GNR.Contact": ["اطلاعات تماس", "اطلاعات پایه"],
+    "GNR.Address": ["نشانی ها", "اطلاعات پایه"],
+    "GNR.Country": ["کشورها", "اطلاعات پایه"],
+    "GNR.Province": ["استان ها", "اطلاعات پایه"],
+    "GNR.City": ["شهرها", "اطلاعات پایه"],
     "GNR.Location": ["مناطق و محل ها", "اطلاعات پایه وابسته"],
+    "GNR.Unit": ["واحدهای سنجش", "اطلاعات پایه"],
+    "GNR.FiscalPeriod": ["دوره های مالی", "اطلاعات پایه"],
     "GNR.DebitCreditNote": ["اعلامیه بدهکار/بستانکار", "عملیات وابسته"],
     "GNR.DebitCreditNoteItem": ["آیتم های اعلامیه بدهکار/بستانکار", "عملیات وابسته"],
     "SLS.Customer": ["مشتریان", "اطلاعات پایه"],
@@ -1153,7 +1180,7 @@
     if (/Voucher|Operation|Receipt|Payment|Cheque|Settlement|Bill|Balance|Reconciliation|Refund|History|Stock|Inventory|Receipt|Delivery|Transfer|Adjustment|Pricing|Taking|Tracking|Weighing|Turnover|Profit|Loss|Liquidity|Commitment|Journal|Invoice|Order|Quotation|Return|Commission|Report|Payroll|WorkTime|Leave|Mission|PaySlip|Loan|Acquisition|Depreciation|Disposal|Repair|Revaluation|Sale|Tender|Agreement|Guarantee|Statement|WorkOrder|ProductionOrder|MaterialIssue|ProductReceipt|ProductionCost|Shift|DailySale|CashierSettlement/i.test(tableName)) {
       return "عملیات";
     }
-    if (/Account|Bank|Branch|Cash|Pos|Type|Topic|DL|Specification|Book|Item|Warehouse|Unit|Category|Scale|CostCenter|Ledger|CashFlow|Customer|Sales|Price|Discount|Marketer|Visitor|Person|Area|Office|Employee|Personnel|Employment|Salary|Benefit|Deduction|Insurance|Tax|Asset|Location|Method|Contract|Project|Party|Formula|BOM|Routing|Stage|Material|Product|Store|Cashier|Terminal|Barcode|Register/i.test(tableName)) {
+    if (/Account|Bank|Branch|Cash|Pos|Type|Topic|DL|Specification|Book|Item|Warehouse|Unit|Category|Scale|CostCenter|Ledger|CashFlow|Customer|Sales|Price|Discount|Marketer|Visitor|Person|Area|Office|Employee|Personnel|Employment|Salary|Benefit|Deduction|Insurance|Tax|Asset|Location|Method|Contract|Project|Party|Formula|BOM|Routing|Stage|Material|Product|Store|Cashier|Terminal|Barcode|Register|Currency|Exchange|Contact|Address|Country|Province|City|FiscalPeriod/i.test(tableName)) {
       return "اطلاعات پایه";
     }
     return "سایر";
@@ -1234,6 +1261,9 @@
     label = label.replace(/\bCash Register\b/g, "صندوق فروش");
     label = label.replace(/\bDaily Sale\b/g, "فروش روزانه");
     label = label.replace(/\bCashier Settlement\b/g, "تسویه صندوق دار");
+    label = label.replace(/\bExchange Rate\b/g, "نرخ ارز");
+    label = label.replace(/\bDebit Credit Note\b/g, "اعلامیه بدهکار/بستانکار");
+    label = label.replace(/\bFiscal Period\b/g, "دوره مالی");
     label = label.replace(/\bAccount\b/g, "حساب");
     label = label.replace(/\bLedger\b/g, "دفتر حسابداری");
     label = label.replace(/\bJournal\b/g, "دفتر روزنامه");
@@ -1305,6 +1335,12 @@
     label = label.replace(/\bShift\b/g, "شیفت");
     label = label.replace(/\bTerminal\b/g, "پایانه فروش");
     label = label.replace(/\bBarcode\b/g, "بارکد");
+    label = label.replace(/\bContact\b/g, "اطلاعات تماس");
+    label = label.replace(/\bAddress\b/g, "نشانی");
+    label = label.replace(/\bCountry\b/g, "کشور");
+    label = label.replace(/\bProvince\b/g, "استان");
+    label = label.replace(/\bCity\b/g, "شهر");
+    label = label.replace(/\bExchange\b/g, "تبدیل");
     label = label.replace(/\bProduct\b/g, "محصول");
     label = label.replace(/\bCurrency\b/g, "ارز");
     label = label.replace(/\bFiscalYear\b/g, "سال مالی");
