@@ -34,6 +34,19 @@ textarea {
   min-height: 100vh;
   display: grid;
   grid-template-columns: 310px 1fr;
+  transition: grid-template-columns 180ms ease;
+}
+
+.app-shell.menu-collapsed {
+  grid-template-columns: 0 1fr;
+}
+
+.app-shell.menu-collapsed .sidebar {
+  transform: translateX(110%);
+  opacity: 0;
+  pointer-events: none;
+  padding-left: 0;
+  padding-right: 0;
 }
 
 .app-shell.grid-fullscreen {
@@ -66,6 +79,7 @@ textarea {
   color: #eef6ff;
   padding: 24px 18px;
   overflow-y: auto;
+  transition: transform 180ms ease, opacity 180ms ease, padding 180ms ease;
 }
 
 .brand {
@@ -440,9 +454,17 @@ tr:hover td {
     grid-template-columns: 1fr;
   }
 
+  .app-shell.menu-collapsed {
+    grid-template-columns: 1fr;
+  }
+
   .sidebar {
     position: static;
     max-height: 42vh;
+  }
+
+  .app-shell.menu-collapsed .sidebar {
+    display: none;
   }
 
   .content-grid {

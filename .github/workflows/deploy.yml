@@ -43,6 +43,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: .
+          platforms: linux/amd64,linux/arm64
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
@@ -71,14 +72,6 @@ jobs:
         uses: appleboy/ssh-action@v1.2.0
         env:
           IMAGE_NAME: ghcr.io/${{ github.repository }}:latest
-          APP_PORT: ${{ vars.APP_PORT || '5173' }}
-          SQL_SERVER: ${{ secrets.SQL_SERVER }}
-          SQL_PORT: ${{ vars.SQL_PORT || '1433' }}
-          SQL_DATABASE: ${{ vars.SQL_DATABASE || 'Sepidar_Analysis_New' }}
-          SQL_USER: ${{ secrets.SQL_USER }}
-          SQL_PASSWORD: ${{ secrets.SQL_PASSWORD }}
-          SQL_ENCRYPT: ${{ vars.SQL_ENCRYPT || 'false' }}
-          SQL_TRUST_CERT: ${{ vars.SQL_TRUST_CERT || 'true' }}
           GHCR_USER: ${{ github.actor }}
           GHCR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -86,23 +79,24 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.SSH_PORT || 22 }}
-          envs: IMAGE_NAME,APP_PORT,SQL_SERVER,SQL_PORT,SQL_DATABASE,SQL_USER,SQL_PASSWORD,SQL_ENCRYPT,SQL_TRUST_CERT,GHCR_USER,GHCR_TOKEN
+          envs: IMAGE_NAME,GHCR_USER,GHCR_TOKEN
           script: |
             set -e
             mkdir -p "${{ secrets.DEPLOY_PATH }}"
             cd "${{ secrets.DEPLOY_PATH }}"
-            cat > .env <<EOF
-            IMAGE_NAME=$IMAGE_NAME
-            APP_PORT=$APP_PORT
-            SQL_SERVER=$SQL_SERVER
-            SQL_PORT=$SQL_PORT
-            SQL_DATABASE=$SQL_DATABASE
-            SQL_USER=$SQL_USER
-            SQL_PASSWORD=$SQL_PASSWORD
-            SQL_ENCRYPT=$SQL_ENCRYPT
-            SQL_TRUST_CERT=$SQL_TRUST_CERT
-            EOF
+            if [ ! -f .env ]; then
+              printf 'IMAGE_NAME=%s\nAPP_PORT=5173\nSQL_SERVER=\nSQL_PORT=1433\nSQL_DATABASE=sepidAI_Analysis_New\nSQL_USER=\nSQL_PASSWORD=\nSQL_ENCRYPT=false\nSQL_TRUST_CERT=true\n' "$IMAGE_NAME" > .env
+              echo "Created template .env. Fill SQL settings on the server before starting the app."
+              exit 1
+            fi
+            if grep -q '^IMAGE_NAME=' .env; then
+              sed -i "s|^IMAGE_NAME=.*|IMAGE_NAME=$IMAGE_NAME|" .env
+            else
+              printf '\nIMAGE_NAME=%s\n' "$IMAGE_NAME" >> .env
+            fi
             echo "$GHCR_TOKEN" | docker login ghcr.io -u "$GHCR_USER" --password-stdin
             docker compose pull
             docker compose up -d --remove-orphans
             docker image prune -f
+
+

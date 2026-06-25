@@ -5,7 +5,7 @@ param(
   [Parameter(Mandatory = $true)]
   [string]$BackupPath,
 
-  [string]$DatabaseName = "Sepidar_Analysis",
+  [string]$DatabaseName = "sepidAI_Analysis",
 
   [string]$DataPath = "",
 
@@ -60,3 +60,5 @@ WITH MOVE N'$($dataLogical.Replace("'","''"))' TO N'$($mdf.Replace("'","''"))',
 
 sqlcmd -S $ServerInstance -E -Q $restoreSql
 Write-Host "Restored $DatabaseName on $ServerInstance"
+
+

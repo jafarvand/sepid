@@ -4,7 +4,7 @@ param(
   [string]$Action,
 
   [string]$ServerInstance = ".\SQLEXPRESS",
-  [string]$DatabaseName = "Sepidar_Analysis_New",
+  [string]$DatabaseName = "sepidAI_Analysis_New",
   [string]$Schema = "",
   [string]$Table = "",
   [int]$Page = 1,
@@ -365,3 +365,5 @@ ORDER BY
 finally {
   $conn.Close()
 }
+
+

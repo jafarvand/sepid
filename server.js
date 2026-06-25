@@ -15,7 +15,7 @@ const port = Number(process.env.PORT || 5173);
 const bindHost = process.env.HOST || "127.0.0.1";
 const sqlServer = process.env.SQL_SERVER || (process.platform === "win32" ? ".\\SQLEXPRESS" : "localhost");
 const sqlPort = Number(process.env.SQL_PORT || 1433);
-const sqlDatabase = process.env.SQL_DATABASE || "Sepidar_Analysis_New";
+const sqlDatabase = process.env.SQL_DATABASE || "sepidAI_Analysis_New";
 const sqlUser = process.env.SQL_USER || "";
 const sqlPassword = process.env.SQL_PASSWORD || "";
 const sqlEncrypt = String(process.env.SQL_ENCRYPT || "false").toLowerCase() === "true";
@@ -61,7 +61,7 @@ const server = http.createServer(async (req, res) => {
 });
 
 server.listen(port, bindHost, () => {
-  console.log(`Sepidar SQL app: http://${bindHost}:${port}`);
+  console.log(`sepidAI SQL app: http://${bindHost}:${port}`);
   console.log(`SQL Server: ${sqlServer}:${sqlPort} / ${sqlDatabase}`);
 });
 
@@ -222,7 +222,7 @@ async function getRows({ schema, table, page, pageSize, search, sortField, sortD
 
 async function updateRow(schema, table, body) {
   if (!sql) {
-    const bodyPath = path.join(os.tmpdir(), `sepidar-row-${Date.now()}-${Math.random().toString(16).slice(2)}.json`);
+    const bodyPath = path.join(os.tmpdir(), `sepidAI-row-${Date.now()}-${Math.random().toString(16).slice(2)}.json`);
     fs.writeFileSync(bodyPath, JSON.stringify(body || {}), "utf8");
     try {
       return await runSqlApi(["-Action", "update", "-Schema", schema, "-Table", table, "-BodyPath", bodyPath]);
@@ -444,3 +444,5 @@ function splitTableId(tableId) {
 function quoteName(name) {
   return `[${String(name).replace(/]/g, "]]")}]`;
 }
+
+
