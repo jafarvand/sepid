@@ -11,7 +11,7 @@
     sls: ["سیستم مشتریان و فروش", "مشتریان، پیش فاکتور، سفارش، فاکتور فروش، برگشت فروش، تخفیف و پورسانت"],
     pty: ["اشخاص", "طرف حساب ها و اطلاعات پایه اشخاص"],
     gnr: ["سیستم عمومی", "اطلاعات پایه مشترک، اشخاص، ارز، مناطق، نشانی، تماس، واحدها و اعلامیه ها"],
-    fmk: ["چارچوب سیستم", "کاربران، نقش ها، تنظیمات و زیرساخت"],
+    fmk: ["چارچوب و امنیت سیستم", "شرکت، شعبه، سال مالی، کاربران، نقش ها، دسترسی ها، تنظیمات و شماره گذاری"],
     pay: ["سیستم حقوق و دستمزد", "پرسنل، احکام، کارکرد، مرخصی، ماموریت، مالیات، بیمه و پرداخت حقوق"],
     ast: ["سیستم دارایی ثابت", "دارایی ها، گروه دارایی، محل استقرار، تحصیل، استهلاک، انتقال و خروج دارایی"],
     cnt: ["سیستم پیمانکاری و قراردادها", "قرارداد، پروژه، ضمانت نامه، صورت وضعیت، تعدیل، دریافت و پرداخت پیمان"],
@@ -82,6 +82,29 @@
     LastModifier: "آخرین ویرایشگر",
     LastModificationDate: "تاریخ آخرین ویرایش",
     FiscalYearRef: "سال مالی",
+    CompanyId: "شناسه شرکت",
+    CompanyRef: "شرکت",
+    CompanyCode: "کد شرکت",
+    CompanyTitle: "عنوان شرکت",
+    BranchId: "شناسه شعبه",
+    BranchRef: "شعبه",
+    BranchCode: "کد شعبه",
+    BranchTitle: "عنوان شعبه",
+    UserId: "شناسه کاربر",
+    UserRef: "کاربر",
+    UserName: "نام کاربری",
+    RoleId: "شناسه نقش",
+    RoleRef: "نقش",
+    RoleTitle: "عنوان نقش",
+    PermissionId: "شناسه دسترسی",
+    PermissionRef: "دسترسی",
+    AccessGroupId: "شناسه گروه دسترسی",
+    AccessGroupRef: "گروه دسترسی",
+    SettingId: "شناسه تنظیمات",
+    SettingKey: "کلید تنظیمات",
+    SettingValue: "مقدار تنظیمات",
+    NumberingRef: "شماره گذاری",
+    NumberingId: "شناسه شماره گذاری",
     AccountGroupRef: "گروه حساب",
     AccountCode: "کد حساب",
     AccountTitle: "عنوان حساب",
@@ -625,6 +648,18 @@
     "POS.DailySale": ["فروش روزانه", "عملیات"],
     "POS.CashierSettlement": ["تسویه صندوق دار", "عملیات"],
     "FMK.FiscalYear": ["سال مالی", "اطلاعات پایه وابسته"],
+    "FMK.Company": ["شرکت ها", "اطلاعات پایه"],
+    "FMK.Branch": ["شعب", "اطلاعات پایه"],
+    "FMK.User": ["کاربران", "اطلاعات پایه"],
+    "FMK.Role": ["نقش ها", "اطلاعات پایه"],
+    "FMK.Permission": ["دسترسی ها", "اطلاعات پایه"],
+    "FMK.AccessGroup": ["گروه های دسترسی", "اطلاعات پایه"],
+    "FMK.UserRole": ["نقش های کاربر", "اطلاعات پایه"],
+    "FMK.RolePermission": ["دسترسی های نقش", "اطلاعات پایه"],
+    "FMK.Setting": ["تنظیمات سیستم", "اطلاعات پایه"],
+    "FMK.Numbering": ["شماره گذاری اسناد", "اطلاعات پایه"],
+    "FMK.AuditLog": ["سوابق تغییرات", "عملیات"],
+    "FMK.Log": ["رخدادهای سیستم", "عملیات"],
     "GNR.Currency": ["ارزها", "اطلاعات پایه وابسته"],
     "GNR.ExchangeRate": ["نرخ ارز", "اطلاعات پایه"],
     "GNR.Party": ["طرف حساب ها", "اطلاعات پایه وابسته"],
@@ -1177,10 +1212,10 @@
   }
 
   function inferTableGroup(tableName) {
-    if (/Voucher|Operation|Receipt|Payment|Cheque|Settlement|Bill|Balance|Reconciliation|Refund|History|Stock|Inventory|Receipt|Delivery|Transfer|Adjustment|Pricing|Taking|Tracking|Weighing|Turnover|Profit|Loss|Liquidity|Commitment|Journal|Invoice|Order|Quotation|Return|Commission|Report|Payroll|WorkTime|Leave|Mission|PaySlip|Loan|Acquisition|Depreciation|Disposal|Repair|Revaluation|Sale|Tender|Agreement|Guarantee|Statement|WorkOrder|ProductionOrder|MaterialIssue|ProductReceipt|ProductionCost|Shift|DailySale|CashierSettlement/i.test(tableName)) {
+    if (/Voucher|Operation|Receipt|Payment|Cheque|Settlement|Bill|Balance|Reconciliation|Refund|History|Stock|Inventory|Receipt|Delivery|Transfer|Adjustment|Pricing|Taking|Tracking|Weighing|Turnover|Profit|Loss|Liquidity|Commitment|Journal|Invoice|Order|Quotation|Return|Commission|Report|Payroll|WorkTime|Leave|Mission|PaySlip|Loan|Acquisition|Depreciation|Disposal|Repair|Revaluation|Sale|Tender|Agreement|Guarantee|Statement|WorkOrder|ProductionOrder|MaterialIssue|ProductReceipt|ProductionCost|Shift|DailySale|CashierSettlement|Audit|Log/i.test(tableName)) {
       return "عملیات";
     }
-    if (/Account|Bank|Branch|Cash|Pos|Type|Topic|DL|Specification|Book|Item|Warehouse|Unit|Category|Scale|CostCenter|Ledger|CashFlow|Customer|Sales|Price|Discount|Marketer|Visitor|Person|Area|Office|Employee|Personnel|Employment|Salary|Benefit|Deduction|Insurance|Tax|Asset|Location|Method|Contract|Project|Party|Formula|BOM|Routing|Stage|Material|Product|Store|Cashier|Terminal|Barcode|Register|Currency|Exchange|Contact|Address|Country|Province|City|FiscalPeriod/i.test(tableName)) {
+    if (/Account|Bank|Branch|Cash|Pos|Type|Topic|DL|Specification|Book|Item|Warehouse|Unit|Category|Scale|CostCenter|Ledger|CashFlow|Customer|Sales|Price|Discount|Marketer|Visitor|Person|Area|Office|Employee|Personnel|Employment|Salary|Benefit|Deduction|Insurance|Tax|Asset|Location|Method|Contract|Project|Party|Formula|BOM|Routing|Stage|Material|Product|Store|Cashier|Terminal|Barcode|Register|Currency|Exchange|Contact|Address|Country|Province|City|FiscalPeriod|Company|User|Role|Permission|Access|Setting|Numbering/i.test(tableName)) {
       return "اطلاعات پایه";
     }
     return "سایر";
@@ -1264,6 +1299,10 @@
     label = label.replace(/\bExchange Rate\b/g, "نرخ ارز");
     label = label.replace(/\bDebit Credit Note\b/g, "اعلامیه بدهکار/بستانکار");
     label = label.replace(/\bFiscal Period\b/g, "دوره مالی");
+    label = label.replace(/\bAccess Group\b/g, "گروه دسترسی");
+    label = label.replace(/\bAudit Log\b/g, "سوابق تغییرات");
+    label = label.replace(/\bUser Role\b/g, "نقش کاربر");
+    label = label.replace(/\bRole Permission\b/g, "دسترسی نقش");
     label = label.replace(/\bAccount\b/g, "حساب");
     label = label.replace(/\bLedger\b/g, "دفتر حسابداری");
     label = label.replace(/\bJournal\b/g, "دفتر روزنامه");
@@ -1341,6 +1380,13 @@
     label = label.replace(/\bProvince\b/g, "استان");
     label = label.replace(/\bCity\b/g, "شهر");
     label = label.replace(/\bExchange\b/g, "تبدیل");
+    label = label.replace(/\bCompany\b/g, "شرکت");
+    label = label.replace(/\bUser\b/g, "کاربر");
+    label = label.replace(/\bRole\b/g, "نقش");
+    label = label.replace(/\bPermission\b/g, "دسترسی");
+    label = label.replace(/\bAccess\b/g, "دسترسی");
+    label = label.replace(/\bSetting\b/g, "تنظیمات");
+    label = label.replace(/\bNumbering\b/g, "شماره گذاری");
     label = label.replace(/\bProduct\b/g, "محصول");
     label = label.replace(/\bCurrency\b/g, "ارز");
     label = label.replace(/\bFiscalYear\b/g, "سال مالی");
