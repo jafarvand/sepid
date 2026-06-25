@@ -13,7 +13,7 @@
     gnr: ["عمومی", "اطلاعات پایه و تنظیمات مشترک"],
     fmk: ["چارچوب سیستم", "کاربران، نقش ها، تنظیمات و زیرساخت"],
     pay: ["سیستم حقوق و دستمزد", "پرسنل، احکام، کارکرد، مرخصی، ماموریت، مالیات، بیمه و پرداخت حقوق"],
-    ast: ["دارایی ثابت", "دارایی ها، استهلاک و عملیات دارایی"],
+    ast: ["سیستم دارایی ثابت", "دارایی ها، گروه دارایی، محل استقرار، تحصیل، استهلاک، انتقال و خروج دارایی"],
     cnt: ["قراردادها", "قراردادها و عملیات مرتبط"],
     msg: ["پیام ها", "پیام ها و اعلان های سیستم"],
     scd: ["زمان بندی", "برنامه ها و زمان بندی عملیات"],
@@ -301,6 +301,28 @@
     Address: "نشانی",
     LocationId: "شناسه محل",
     ParentLocationRef: "محل والد",
+    AssetId: "شناسه دارایی",
+    AssetRef: "دارایی",
+    AssetCode: "کد دارایی",
+    AssetTitle: "عنوان دارایی",
+    AssetGroupRef: "گروه دارایی",
+    AssetGroupId: "شناسه گروه دارایی",
+    AssetLocationRef: "محل استقرار دارایی",
+    AssetLocationId: "شناسه محل استقرار دارایی",
+    PlaqueNumber: "شماره پلاک",
+    AcquisitionDate: "تاریخ تحصیل",
+    AcquisitionAmount: "بهای تمام شده",
+    DepreciationMethodRef: "روش استهلاک",
+    DepreciationMethodId: "شناسه روش استهلاک",
+    DepreciationRate: "نرخ استهلاک",
+    DepreciationAmount: "مبلغ استهلاک",
+    AccumulatedDepreciation: "استهلاک انباشته",
+    BookValue: "ارزش دفتری",
+    SalvageValue: "ارزش اسقاط",
+    UsefulLife: "عمر مفید",
+    DisposalDate: "تاریخ خروج",
+    DisposalAmount: "مبلغ خروج",
+    RevaluationAmount: "مبلغ تجدید ارزیابی",
     DebitCreditNoteId: "شناسه اعلامیه",
     DebitCreditNoteItemId: "شناسه آیتم اعلامیه",
     InvoiceId: "شناسه فاکتور",
@@ -458,6 +480,22 @@
     "PAY.Payment": ["پرداخت حقوق", "عملیات"],
     "PAY.Loan": ["وام پرسنل", "عملیات"],
     "PAY.LoanItem": ["اقساط وام", "عملیات"],
+    "AST.Asset": ["دارایی ها", "اطلاعات پایه"],
+    "AST.AssetGroup": ["گروه های دارایی", "اطلاعات پایه"],
+    "AST.AssetLocation": ["محل های استقرار دارایی", "اطلاعات پایه"],
+    "AST.DepreciationMethod": ["روش های استهلاک", "اطلاعات پایه"],
+    "AST.AssetAcquisition": ["تحصیل دارایی", "عملیات"],
+    "AST.Acquisition": ["تحصیل دارایی", "عملیات"],
+    "AST.Depreciation": ["محاسبه استهلاک", "عملیات"],
+    "AST.DepreciationItem": ["اقلام استهلاک", "عملیات"],
+    "AST.AssetTransfer": ["انتقال دارایی", "عملیات"],
+    "AST.Transfer": ["انتقال دارایی", "عملیات"],
+    "AST.AssetRepair": ["تعمیرات دارایی", "عملیات"],
+    "AST.Repair": ["تعمیرات دارایی", "عملیات"],
+    "AST.AssetDisposal": ["خروج دارایی", "عملیات"],
+    "AST.Disposal": ["خروج دارایی", "عملیات"],
+    "AST.AssetSale": ["فروش دارایی", "عملیات"],
+    "AST.Revaluation": ["تجدید ارزیابی دارایی", "عملیات"],
     "FMK.FiscalYear": ["سال مالی", "اطلاعات پایه وابسته"],
     "GNR.Currency": ["ارزها", "اطلاعات پایه وابسته"],
     "GNR.Party": ["طرف حساب ها", "اطلاعات پایه وابسته"],
@@ -1002,10 +1040,10 @@
   }
 
   function inferTableGroup(tableName) {
-    if (/Voucher|Operation|Receipt|Payment|Cheque|Settlement|Bill|Balance|Reconciliation|Refund|History|Stock|Inventory|Receipt|Delivery|Transfer|Adjustment|Pricing|Taking|Tracking|Weighing|Turnover|Profit|Loss|Liquidity|Commitment|Journal|Invoice|Order|Quotation|Return|Commission|Report|Payroll|WorkTime|Leave|Mission|PaySlip|Loan/i.test(tableName)) {
+    if (/Voucher|Operation|Receipt|Payment|Cheque|Settlement|Bill|Balance|Reconciliation|Refund|History|Stock|Inventory|Receipt|Delivery|Transfer|Adjustment|Pricing|Taking|Tracking|Weighing|Turnover|Profit|Loss|Liquidity|Commitment|Journal|Invoice|Order|Quotation|Return|Commission|Report|Payroll|WorkTime|Leave|Mission|PaySlip|Loan|Acquisition|Depreciation|Disposal|Repair|Revaluation|Sale/i.test(tableName)) {
       return "عملیات";
     }
-    if (/Account|Bank|Branch|Cash|Pos|Type|Topic|DL|Specification|Book|Item|Warehouse|Unit|Category|Scale|CostCenter|Ledger|CashFlow|Customer|Sales|Price|Discount|Marketer|Visitor|Person|Area|Office|Employee|Personnel|Employment|Salary|Benefit|Deduction|Insurance|Tax/i.test(tableName)) {
+    if (/Account|Bank|Branch|Cash|Pos|Type|Topic|DL|Specification|Book|Item|Warehouse|Unit|Category|Scale|CostCenter|Ledger|CashFlow|Customer|Sales|Price|Discount|Marketer|Visitor|Person|Area|Office|Employee|Personnel|Employment|Salary|Benefit|Deduction|Insurance|Tax|Asset|Location|Method/i.test(tableName)) {
       return "اطلاعات پایه";
     }
     return "سایر";
@@ -1066,6 +1104,12 @@
     label = label.replace(/\bSalary Item\b/g, "عامل حقوق");
     label = label.replace(/\bWork Time\b/g, "کارکرد");
     label = label.replace(/\bPay Slip\b/g, "فیش حقوقی");
+    label = label.replace(/\bAsset Group\b/g, "گروه دارایی");
+    label = label.replace(/\bAsset Location\b/g, "محل استقرار دارایی");
+    label = label.replace(/\bDepreciation Method\b/g, "روش استهلاک");
+    label = label.replace(/\bBook Value\b/g, "ارزش دفتری");
+    label = label.replace(/\bSalvage Value\b/g, "ارزش اسقاط");
+    label = label.replace(/\bUseful Life\b/g, "عمر مفید");
     label = label.replace(/\bAccount\b/g, "حساب");
     label = label.replace(/\bLedger\b/g, "دفتر حسابداری");
     label = label.replace(/\bJournal\b/g, "دفتر روزنامه");
@@ -1110,6 +1154,13 @@
     label = label.replace(/\bLeave\b/g, "مرخصی");
     label = label.replace(/\bMission\b/g, "ماموریت");
     label = label.replace(/\bLoan\b/g, "وام");
+    label = label.replace(/\bAsset\b/g, "دارایی");
+    label = label.replace(/\bAcquisition\b/g, "تحصیل");
+    label = label.replace(/\bDepreciation\b/g, "استهلاک");
+    label = label.replace(/\bDisposal\b/g, "خروج");
+    label = label.replace(/\bRepair\b/g, "تعمیرات");
+    label = label.replace(/\bRevaluation\b/g, "تجدید ارزیابی");
+    label = label.replace(/\bPlaque\b/g, "پلاک");
     label = label.replace(/\bProduct\b/g, "محصول");
     label = label.replace(/\bCurrency\b/g, "ارز");
     label = label.replace(/\bFiscalYear\b/g, "سال مالی");
