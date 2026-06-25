@@ -12,7 +12,7 @@
     pty: ["اشخاص", "طرف حساب ها و اطلاعات پایه اشخاص"],
     gnr: ["عمومی", "اطلاعات پایه و تنظیمات مشترک"],
     fmk: ["چارچوب سیستم", "کاربران، نقش ها، تنظیمات و زیرساخت"],
-    pay: ["حقوق و دستمزد", "پرسنل، احکام، کارکرد و پرداخت"],
+    pay: ["سیستم حقوق و دستمزد", "پرسنل، احکام، کارکرد، مرخصی، ماموریت، مالیات، بیمه و پرداخت حقوق"],
     ast: ["دارایی ثابت", "دارایی ها، استهلاک و عملیات دارایی"],
     cnt: ["قراردادها", "قراردادها و عملیات مرتبط"],
     msg: ["پیام ها", "پیام ها و اعلان های سیستم"],
@@ -252,6 +252,45 @@
     PrecisionCount: "تعداد اعشار",
     ExchangeRate: "نرخ تبدیل",
     PartyId: "شناسه طرف حساب",
+    EmployeeId: "شناسه پرسنل",
+    EmployeeRef: "پرسنل",
+    EmployeeCode: "کد پرسنلی",
+    EmployeeNumber: "شماره پرسنلی",
+    PersonnelRef: "پرسنل",
+    PersonnelId: "شناسه پرسنل",
+    PersonnelCode: "کد پرسنلی",
+    EmploymentTypeRef: "نوع استخدام",
+    EmploymentContractRef: "قرارداد استخدام",
+    EmploymentContractId: "شناسه قرارداد استخدام",
+    PayrollRef: "محاسبه حقوق",
+    PayrollId: "شناسه محاسبه حقوق",
+    PayrollItemId: "شناسه قلم حقوق",
+    SalaryRef: "حقوق",
+    SalaryId: "شناسه حقوق",
+    SalaryItemId: "شناسه قلم حقوق",
+    SalaryRuleRef: "حکم کارگزینی",
+    SalaryRuleId: "شناسه حکم کارگزینی",
+    SalaryBase: "حقوق پایه",
+    Wage: "دستمزد",
+    WageAmount: "مبلغ دستمزد",
+    WorkTime: "کارکرد",
+    WorkDay: "روز کارکرد",
+    WorkHour: "ساعت کارکرد",
+    OvertimeHour: "ساعت اضافه کار",
+    OvertimeAmount: "مبلغ اضافه کار",
+    LeaveRef: "مرخصی",
+    LeaveId: "شناسه مرخصی",
+    MissionRef: "ماموریت",
+    MissionId: "شناسه ماموریت",
+    BenefitAmount: "مزایا",
+    DeductionAmount: "کسور",
+    InsuranceAmount: "بیمه",
+    TaxAmount: "مالیات",
+    NetPay: "خالص پرداختنی",
+    PaySlipRef: "فیش حقوقی",
+    PaySlipId: "شناسه فیش حقوقی",
+    LoanRef: "وام",
+    LoanId: "شناسه وام",
     FirstName: "نام",
     LastName: "نام خانوادگی",
     FullName: "نام کامل",
@@ -399,6 +438,26 @@
     "INV.WeighingItem": ["اقلام توزین", "عملیات"],
     "INV.ItemPrice": ["قیمت کالا", "اطلاعات پایه"],
     "INV.ItemImage": ["تصاویر کالا", "اطلاعات پایه"],
+    "PAY.Employee": ["پرسنل", "اطلاعات پایه"],
+    "PAY.Personnel": ["پرسنل", "اطلاعات پایه"],
+    "PAY.EmploymentType": ["انواع استخدام", "اطلاعات پایه"],
+    "PAY.EmploymentContract": ["قراردادهای استخدام", "اطلاعات پایه"],
+    "PAY.SalaryRule": ["احکام کارگزینی", "اطلاعات پایه"],
+    "PAY.SalaryItem": ["عوامل حقوق و دستمزد", "اطلاعات پایه"],
+    "PAY.Benefit": ["مزایا", "اطلاعات پایه"],
+    "PAY.Deduction": ["کسور", "اطلاعات پایه"],
+    "PAY.Insurance": ["بیمه", "اطلاعات پایه"],
+    "PAY.Tax": ["مالیات حقوق", "اطلاعات پایه"],
+    "PAY.WorkTime": ["کارکرد پرسنل", "عملیات"],
+    "PAY.WorkTimeItem": ["اقلام کارکرد", "عملیات"],
+    "PAY.Leave": ["مرخصی ها", "عملیات"],
+    "PAY.Mission": ["ماموریت ها", "عملیات"],
+    "PAY.Payroll": ["محاسبه حقوق", "عملیات"],
+    "PAY.PayrollItem": ["اقلام محاسبه حقوق", "عملیات"],
+    "PAY.PaySlip": ["فیش حقوقی", "عملیات"],
+    "PAY.Payment": ["پرداخت حقوق", "عملیات"],
+    "PAY.Loan": ["وام پرسنل", "عملیات"],
+    "PAY.LoanItem": ["اقساط وام", "عملیات"],
     "FMK.FiscalYear": ["سال مالی", "اطلاعات پایه وابسته"],
     "GNR.Currency": ["ارزها", "اطلاعات پایه وابسته"],
     "GNR.Party": ["طرف حساب ها", "اطلاعات پایه وابسته"],
@@ -943,10 +1002,10 @@
   }
 
   function inferTableGroup(tableName) {
-    if (/Voucher|Operation|Receipt|Payment|Cheque|Settlement|Bill|Balance|Reconciliation|Refund|History|Stock|Inventory|Receipt|Delivery|Transfer|Adjustment|Pricing|Taking|Tracking|Weighing|Turnover|Profit|Loss|Liquidity|Commitment|Journal|Invoice|Order|Quotation|Return|Commission|Report/i.test(tableName)) {
+    if (/Voucher|Operation|Receipt|Payment|Cheque|Settlement|Bill|Balance|Reconciliation|Refund|History|Stock|Inventory|Receipt|Delivery|Transfer|Adjustment|Pricing|Taking|Tracking|Weighing|Turnover|Profit|Loss|Liquidity|Commitment|Journal|Invoice|Order|Quotation|Return|Commission|Report|Payroll|WorkTime|Leave|Mission|PaySlip|Loan/i.test(tableName)) {
       return "عملیات";
     }
-    if (/Account|Bank|Branch|Cash|Pos|Type|Topic|DL|Specification|Book|Item|Warehouse|Unit|Category|Scale|CostCenter|Ledger|CashFlow|Customer|Sales|Price|Discount|Marketer|Visitor|Person|Area|Office/i.test(tableName)) {
+    if (/Account|Bank|Branch|Cash|Pos|Type|Topic|DL|Specification|Book|Item|Warehouse|Unit|Category|Scale|CostCenter|Ledger|CashFlow|Customer|Sales|Price|Discount|Marketer|Visitor|Person|Area|Office|Employee|Personnel|Employment|Salary|Benefit|Deduction|Insurance|Tax/i.test(tableName)) {
       return "اطلاعات پایه";
     }
     return "سایر";
@@ -1001,6 +1060,12 @@
     label = label.replace(/\bReturned Invoice\b/g, "برگشت فروش");
     label = label.replace(/\bReturn Invoice\b/g, "برگشت فروش");
     label = label.replace(/\bCommission Calculation\b/g, "محاسبه پورسانت");
+    label = label.replace(/\bEmployment Contract\b/g, "قرارداد استخدام");
+    label = label.replace(/\bEmployment Type\b/g, "نوع استخدام");
+    label = label.replace(/\bSalary Rule\b/g, "حکم کارگزینی");
+    label = label.replace(/\bSalary Item\b/g, "عامل حقوق");
+    label = label.replace(/\bWork Time\b/g, "کارکرد");
+    label = label.replace(/\bPay Slip\b/g, "فیش حقوقی");
     label = label.replace(/\bAccount\b/g, "حساب");
     label = label.replace(/\bLedger\b/g, "دفتر حسابداری");
     label = label.replace(/\bJournal\b/g, "دفتر روزنامه");
@@ -1033,6 +1098,18 @@
     label = label.replace(/\bCommission\b/g, "پورسانت");
     label = label.replace(/\bMarketer\b/g, "بازاریاب");
     label = label.replace(/\bVisitor\b/g, "ویزیتور");
+    label = label.replace(/\bEmployee\b/g, "پرسنل");
+    label = label.replace(/\bPersonnel\b/g, "پرسنل");
+    label = label.replace(/\bEmployment\b/g, "استخدام");
+    label = label.replace(/\bPayroll\b/g, "محاسبه حقوق");
+    label = label.replace(/\bSalary\b/g, "حقوق");
+    label = label.replace(/\bWage\b/g, "دستمزد");
+    label = label.replace(/\bBenefit\b/g, "مزایا");
+    label = label.replace(/\bDeduction\b/g, "کسور");
+    label = label.replace(/\bInsurance\b/g, "بیمه");
+    label = label.replace(/\bLeave\b/g, "مرخصی");
+    label = label.replace(/\bMission\b/g, "ماموریت");
+    label = label.replace(/\bLoan\b/g, "وام");
     label = label.replace(/\bProduct\b/g, "محصول");
     label = label.replace(/\bCurrency\b/g, "ارز");
     label = label.replace(/\bFiscalYear\b/g, "سال مالی");
