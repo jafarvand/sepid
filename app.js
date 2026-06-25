@@ -18,7 +18,7 @@
     msg: ["پیام ها", "پیام ها و اعلان های سیستم"],
     scd: ["زمان بندی", "برنامه ها و زمان بندی عملیات"],
     wko: ["سیستم تولید", "فرمول ساخت، مواد اولیه، سفارش تولید، مراحل تولید، ورود محصول و قیمت تمام شده"],
-    pos: ["فروشگاهی", "اطلاعات و عملیات فروشگاهی"]
+    pos: ["سیستم فروشگاهی", "فروشگاه، شعبه، صندوق فروش، صندوق دار، شیفت، رسید فروش، بارکد و عملیات فروشگاهی"]
   };
   const moduleIcons = {
     acc: "ledger",
@@ -116,6 +116,25 @@
     PettyCashId: "شناسه تنخواه گردان",
     PosRef: "کارت خوان",
     PosId: "شناسه کارت خوان",
+    StoreId: "شناسه فروشگاه",
+    StoreRef: "فروشگاه",
+    StoreCode: "کد فروشگاه",
+    StoreTitle: "عنوان فروشگاه",
+    StoreBranchId: "شناسه شعبه فروشگاه",
+    StoreBranchRef: "شعبه فروشگاه",
+    CashierId: "شناسه صندوق دار",
+    CashierRef: "صندوق دار",
+    CashRegisterId: "شناسه صندوق فروش",
+    CashRegisterRef: "صندوق فروش",
+    ShiftId: "شناسه شیفت",
+    ShiftRef: "شیفت",
+    TerminalId: "شناسه پایانه فروش",
+    TerminalRef: "پایانه فروش",
+    Barcode: "بارکد",
+    POSReceiptId: "شناسه رسید فروشگاهی",
+    POSReceiptRef: "رسید فروشگاهی",
+    POSInvoiceId: "شناسه فاکتور فروشگاهی",
+    POSInvoiceRef: "فاکتور فروشگاهی",
     ChequeBookRef: "دسته چک",
     ChequeBookId: "شناسه دسته چک",
     ChequeDate: "تاریخ چک",
@@ -572,6 +591,21 @@
     "WKO.ProductReceiptItem": ["اقلام ورود محصول تولید شده", "عملیات"],
     "WKO.ProductionCost": ["قیمت تمام شده تولید", "عملیات"],
     "WKO.ProductionCostItem": ["اقلام قیمت تمام شده تولید", "عملیات"],
+    "POS.Store": ["فروشگاه ها", "اطلاعات پایه"],
+    "POS.StoreBranch": ["شعب فروشگاه", "اطلاعات پایه"],
+    "POS.Cashier": ["صندوق دارها", "اطلاعات پایه"],
+    "POS.CashRegister": ["صندوق های فروش", "اطلاعات پایه"],
+    "POS.Terminal": ["پایانه های فروش", "اطلاعات پایه"],
+    "POS.Barcode": ["بارکد کالاها", "اطلاعات پایه"],
+    "POS.Shift": ["شیفت های فروشگاهی", "عملیات"],
+    "POS.Receipt": ["رسیدهای فروشگاهی", "عملیات"],
+    "POS.ReceiptItem": ["اقلام رسید فروشگاهی", "عملیات"],
+    "POS.Invoice": ["فاکتورهای فروشگاهی", "عملیات"],
+    "POS.InvoiceItem": ["اقلام فاکتور فروشگاهی", "عملیات"],
+    "POS.ReturnInvoice": ["برگشت فروشگاهی", "عملیات"],
+    "POS.ReturnInvoiceItem": ["اقلام برگشت فروشگاهی", "عملیات"],
+    "POS.DailySale": ["فروش روزانه", "عملیات"],
+    "POS.CashierSettlement": ["تسویه صندوق دار", "عملیات"],
     "FMK.FiscalYear": ["سال مالی", "اطلاعات پایه وابسته"],
     "GNR.Currency": ["ارزها", "اطلاعات پایه وابسته"],
     "GNR.Party": ["طرف حساب ها", "اطلاعات پایه وابسته"],
@@ -1116,10 +1150,10 @@
   }
 
   function inferTableGroup(tableName) {
-    if (/Voucher|Operation|Receipt|Payment|Cheque|Settlement|Bill|Balance|Reconciliation|Refund|History|Stock|Inventory|Receipt|Delivery|Transfer|Adjustment|Pricing|Taking|Tracking|Weighing|Turnover|Profit|Loss|Liquidity|Commitment|Journal|Invoice|Order|Quotation|Return|Commission|Report|Payroll|WorkTime|Leave|Mission|PaySlip|Loan|Acquisition|Depreciation|Disposal|Repair|Revaluation|Sale|Tender|Agreement|Guarantee|Statement|WorkOrder|ProductionOrder|MaterialIssue|ProductReceipt|ProductionCost/i.test(tableName)) {
+    if (/Voucher|Operation|Receipt|Payment|Cheque|Settlement|Bill|Balance|Reconciliation|Refund|History|Stock|Inventory|Receipt|Delivery|Transfer|Adjustment|Pricing|Taking|Tracking|Weighing|Turnover|Profit|Loss|Liquidity|Commitment|Journal|Invoice|Order|Quotation|Return|Commission|Report|Payroll|WorkTime|Leave|Mission|PaySlip|Loan|Acquisition|Depreciation|Disposal|Repair|Revaluation|Sale|Tender|Agreement|Guarantee|Statement|WorkOrder|ProductionOrder|MaterialIssue|ProductReceipt|ProductionCost|Shift|DailySale|CashierSettlement/i.test(tableName)) {
       return "عملیات";
     }
-    if (/Account|Bank|Branch|Cash|Pos|Type|Topic|DL|Specification|Book|Item|Warehouse|Unit|Category|Scale|CostCenter|Ledger|CashFlow|Customer|Sales|Price|Discount|Marketer|Visitor|Person|Area|Office|Employee|Personnel|Employment|Salary|Benefit|Deduction|Insurance|Tax|Asset|Location|Method|Contract|Project|Party|Formula|BOM|Routing|Stage|Material|Product/i.test(tableName)) {
+    if (/Account|Bank|Branch|Cash|Pos|Type|Topic|DL|Specification|Book|Item|Warehouse|Unit|Category|Scale|CostCenter|Ledger|CashFlow|Customer|Sales|Price|Discount|Marketer|Visitor|Person|Area|Office|Employee|Personnel|Employment|Salary|Benefit|Deduction|Insurance|Tax|Asset|Location|Method|Contract|Project|Party|Formula|BOM|Routing|Stage|Material|Product|Store|Cashier|Terminal|Barcode|Register/i.test(tableName)) {
       return "اطلاعات پایه";
     }
     return "سایر";
@@ -1196,6 +1230,10 @@
     label = label.replace(/\bMaterial Issue\b/g, "خروج مواد");
     label = label.replace(/\bProduct Receipt\b/g, "ورود محصول");
     label = label.replace(/\bProduction Cost\b/g, "قیمت تمام شده تولید");
+    label = label.replace(/\bStore Branch\b/g, "شعبه فروشگاه");
+    label = label.replace(/\bCash Register\b/g, "صندوق فروش");
+    label = label.replace(/\bDaily Sale\b/g, "فروش روزانه");
+    label = label.replace(/\bCashier Settlement\b/g, "تسویه صندوق دار");
     label = label.replace(/\bAccount\b/g, "حساب");
     label = label.replace(/\bLedger\b/g, "دفتر حسابداری");
     label = label.replace(/\bJournal\b/g, "دفتر روزنامه");
@@ -1261,6 +1299,12 @@
     label = label.replace(/\bProduction\b/g, "تولید");
     label = label.replace(/\bWastage\b/g, "ضایعات");
     label = label.replace(/\bScrap\b/g, "ضایعات");
+    label = label.replace(/\bStore\b/g, "فروشگاه");
+    label = label.replace(/\bCashier\b/g, "صندوق دار");
+    label = label.replace(/\bRegister\b/g, "صندوق فروش");
+    label = label.replace(/\bShift\b/g, "شیفت");
+    label = label.replace(/\bTerminal\b/g, "پایانه فروش");
+    label = label.replace(/\bBarcode\b/g, "بارکد");
     label = label.replace(/\bProduct\b/g, "محصول");
     label = label.replace(/\bCurrency\b/g, "ارز");
     label = label.replace(/\bFiscalYear\b/g, "سال مالی");
