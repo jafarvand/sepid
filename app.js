@@ -14,7 +14,7 @@
     fmk: ["چارچوب سیستم", "کاربران، نقش ها، تنظیمات و زیرساخت"],
     pay: ["سیستم حقوق و دستمزد", "پرسنل، احکام، کارکرد، مرخصی، ماموریت، مالیات، بیمه و پرداخت حقوق"],
     ast: ["سیستم دارایی ثابت", "دارایی ها، گروه دارایی، محل استقرار، تحصیل، استهلاک، انتقال و خروج دارایی"],
-    cnt: ["قراردادها", "قراردادها و عملیات مرتبط"],
+    cnt: ["سیستم پیمانکاری و قراردادها", "قرارداد، پروژه، ضمانت نامه، صورت وضعیت، تعدیل، دریافت و پرداخت پیمان"],
     msg: ["پیام ها", "پیام ها و اعلان های سیستم"],
     scd: ["زمان بندی", "برنامه ها و زمان بندی عملیات"],
     wko: ["تولید", "فرمول، سفارش و عملیات تولید"],
@@ -262,6 +262,28 @@
     EmploymentTypeRef: "نوع استخدام",
     EmploymentContractRef: "قرارداد استخدام",
     EmploymentContractId: "شناسه قرارداد استخدام",
+    ContractId: "شناسه قرارداد",
+    ContractRef: "قرارداد",
+    ContractCode: "کد قرارداد",
+    ContractTitle: "عنوان قرارداد",
+    ContractTypeRef: "نوع قرارداد",
+    ContractPartyRef: "طرف قرارداد",
+    ProjectId: "شناسه پروژه",
+    ProjectRef: "پروژه",
+    ProjectCode: "کد پروژه",
+    ProjectTitle: "عنوان پروژه",
+    TenderRef: "مناقصه",
+    TenderId: "شناسه مناقصه",
+    AgreementRef: "موافقت نامه",
+    AgreementId: "شناسه موافقت نامه",
+    GuaranteeRef: "ضمانت نامه",
+    GuaranteeId: "شناسه ضمانت نامه",
+    ProgressStatementRef: "صورت وضعیت",
+    ProgressStatementId: "شناسه صورت وضعیت",
+    AdjustmentRef: "تعدیل",
+    AdjustmentId: "شناسه تعدیل",
+    ContractSettlementRef: "تسویه قرارداد",
+    ContractSettlementId: "شناسه تسویه قرارداد",
     PayrollRef: "محاسبه حقوق",
     PayrollId: "شناسه محاسبه حقوق",
     PayrollItemId: "شناسه قلم حقوق",
@@ -496,6 +518,20 @@
     "AST.Disposal": ["خروج دارایی", "عملیات"],
     "AST.AssetSale": ["فروش دارایی", "عملیات"],
     "AST.Revaluation": ["تجدید ارزیابی دارایی", "عملیات"],
+    "CNT.Contract": ["قراردادها", "اطلاعات پایه"],
+    "CNT.ContractType": ["انواع قرارداد", "اطلاعات پایه"],
+    "CNT.Project": ["پروژه ها", "اطلاعات پایه"],
+    "CNT.ContractParty": ["طرف های قرارداد", "اطلاعات پایه"],
+    "CNT.Tender": ["مناقصه ها", "عملیات"],
+    "CNT.Agreement": ["موافقت نامه ها", "عملیات"],
+    "CNT.Guarantee": ["ضمانت نامه ها", "عملیات"],
+    "CNT.ProgressStatement": ["صورت وضعیت ها", "عملیات"],
+    "CNT.ProgressStatementItem": ["اقلام صورت وضعیت", "عملیات"],
+    "CNT.Adjustment": ["تعدیل قرارداد", "عملیات"],
+    "CNT.AdjustmentItem": ["اقلام تعدیل", "عملیات"],
+    "CNT.ContractReceipt": ["دریافت های قرارداد", "عملیات"],
+    "CNT.ContractPayment": ["پرداخت های قرارداد", "عملیات"],
+    "CNT.ContractSettlement": ["تسویه قرارداد", "عملیات"],
     "FMK.FiscalYear": ["سال مالی", "اطلاعات پایه وابسته"],
     "GNR.Currency": ["ارزها", "اطلاعات پایه وابسته"],
     "GNR.Party": ["طرف حساب ها", "اطلاعات پایه وابسته"],
@@ -1040,10 +1076,10 @@
   }
 
   function inferTableGroup(tableName) {
-    if (/Voucher|Operation|Receipt|Payment|Cheque|Settlement|Bill|Balance|Reconciliation|Refund|History|Stock|Inventory|Receipt|Delivery|Transfer|Adjustment|Pricing|Taking|Tracking|Weighing|Turnover|Profit|Loss|Liquidity|Commitment|Journal|Invoice|Order|Quotation|Return|Commission|Report|Payroll|WorkTime|Leave|Mission|PaySlip|Loan|Acquisition|Depreciation|Disposal|Repair|Revaluation|Sale/i.test(tableName)) {
+    if (/Voucher|Operation|Receipt|Payment|Cheque|Settlement|Bill|Balance|Reconciliation|Refund|History|Stock|Inventory|Receipt|Delivery|Transfer|Adjustment|Pricing|Taking|Tracking|Weighing|Turnover|Profit|Loss|Liquidity|Commitment|Journal|Invoice|Order|Quotation|Return|Commission|Report|Payroll|WorkTime|Leave|Mission|PaySlip|Loan|Acquisition|Depreciation|Disposal|Repair|Revaluation|Sale|Tender|Agreement|Guarantee|Statement/i.test(tableName)) {
       return "عملیات";
     }
-    if (/Account|Bank|Branch|Cash|Pos|Type|Topic|DL|Specification|Book|Item|Warehouse|Unit|Category|Scale|CostCenter|Ledger|CashFlow|Customer|Sales|Price|Discount|Marketer|Visitor|Person|Area|Office|Employee|Personnel|Employment|Salary|Benefit|Deduction|Insurance|Tax|Asset|Location|Method/i.test(tableName)) {
+    if (/Account|Bank|Branch|Cash|Pos|Type|Topic|DL|Specification|Book|Item|Warehouse|Unit|Category|Scale|CostCenter|Ledger|CashFlow|Customer|Sales|Price|Discount|Marketer|Visitor|Person|Area|Office|Employee|Personnel|Employment|Salary|Benefit|Deduction|Insurance|Tax|Asset|Location|Method|Contract|Project|Party/i.test(tableName)) {
       return "اطلاعات پایه";
     }
     return "سایر";
@@ -1110,6 +1146,10 @@
     label = label.replace(/\bBook Value\b/g, "ارزش دفتری");
     label = label.replace(/\bSalvage Value\b/g, "ارزش اسقاط");
     label = label.replace(/\bUseful Life\b/g, "عمر مفید");
+    label = label.replace(/\bContract Party\b/g, "طرف قرارداد");
+    label = label.replace(/\bContract Type\b/g, "نوع قرارداد");
+    label = label.replace(/\bProgress Statement\b/g, "صورت وضعیت");
+    label = label.replace(/\bContract Settlement\b/g, "تسویه قرارداد");
     label = label.replace(/\bAccount\b/g, "حساب");
     label = label.replace(/\bLedger\b/g, "دفتر حسابداری");
     label = label.replace(/\bJournal\b/g, "دفتر روزنامه");
@@ -1161,6 +1201,12 @@
     label = label.replace(/\bRepair\b/g, "تعمیرات");
     label = label.replace(/\bRevaluation\b/g, "تجدید ارزیابی");
     label = label.replace(/\bPlaque\b/g, "پلاک");
+    label = label.replace(/\bContract\b/g, "قرارداد");
+    label = label.replace(/\bProject\b/g, "پروژه");
+    label = label.replace(/\bTender\b/g, "مناقصه");
+    label = label.replace(/\bAgreement\b/g, "موافقت نامه");
+    label = label.replace(/\bGuarantee\b/g, "ضمانت نامه");
+    label = label.replace(/\bStatement\b/g, "صورت وضعیت");
     label = label.replace(/\bProduct\b/g, "محصول");
     label = label.replace(/\bCurrency\b/g, "ارز");
     label = label.replace(/\bFiscalYear\b/g, "سال مالی");
