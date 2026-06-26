@@ -1,9 +1,15 @@
 FROM node:22-alpine AS runtime
 
 WORKDIR /app
+ARG APP_VERSION=0.0.0
+ARG APP_GIT_SHA=local
+ARG APP_BUILD_TIME=unknown
 ENV NODE_ENV=production
 ENV HOST=0.0.0.0
 ENV PORT=5173
+ENV APP_VERSION=$APP_VERSION
+ENV APP_GIT_SHA=$APP_GIT_SHA
+ENV APP_BUILD_TIME=$APP_BUILD_TIME
 
 COPY package*.json ./
 RUN npm install --omit=dev

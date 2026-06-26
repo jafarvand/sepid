@@ -11,8 +11,12 @@ try {
 }
 
 const root = __dirname;
+const packageJson = JSON.parse(fs.readFileSync(path.join(root, "package.json"), "utf8"));
 const port = Number(process.env.PORT || 5173);
 const bindHost = process.env.HOST || "127.0.0.1";
+const appVersion = process.env.APP_VERSION || packageJson.version || "0.0.0";
+const appGitSha = process.env.APP_GIT_SHA || "";
+const appBuildTime = process.env.APP_BUILD_TIME || new Date().toISOString();
 const sqlServer = process.env.SQL_SERVER || (process.platform === "win32" ? ".\\SQLEXPRESS" : "localhost");
 const sqlPort = Number(process.env.SQL_PORT || 1433);
 const sqlDatabase = process.env.SQL_DATABASE || "sepidAI_Analysis_New";
@@ -74,6 +78,16 @@ async function handleApi(req, res, url) {
     const pool = await getPool();
     await pool.request().query("SELECT 1 AS ok");
     sendJson(res, 200, { ok: true, mode: "mssql" });
+    return;
+  }
+
+  if (req.method === "GET" && url.pathname === "/api/meta") {
+    sendJson(res, 200, {
+      name: packageJson.name || "sepidAI",
+      version: appVersion,
+      gitSha: appGitSha,
+      buildTime: appBuildTime
+    });
     return;
   }
 

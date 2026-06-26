@@ -768,6 +768,11 @@
     catalog: [],
     activeModule: "acc",
     activeTableId: "",
+    appMeta: {
+      version: "0.2.0",
+      gitSha: "",
+      buildTime: ""
+    },
     rows: [],
     fields: [],
     primaryKey: [],
@@ -778,7 +783,7 @@
     selectedRowKey: "",
     gridFullscreen: localStorage.getItem(fullscreenKey) === "true",
     menuCollapsed: getInitialMenuCollapsed(),
-    formCollapsed: localStorage.getItem(formCollapsedKey) === "true",
+    formCollapsed: getInitialFormCollapsed(),
     sort: { field: "", direction: "asc" }
   };
 
@@ -789,6 +794,8 @@
     loginPassword: document.getElementById("loginPassword"),
     loginError: document.getElementById("loginError"),
     loginSubmitBtn: document.getElementById("loginSubmitBtn"),
+    loginVersion: document.getElementById("loginVersion"),
+    loginBuildTime: document.getElementById("loginBuildTime"),
     appShell: document.querySelector(".app-shell"),
     systemMenu: document.getElementById("systemMenu"),
     moduleTabs: document.getElementById("moduleTabs"),
@@ -825,11 +832,25 @@
   init();
 
   async function init() {
+    await loadAppMeta();
     bindEvents();
     setStaticUi();
     renderAuthState();
     if (!isAuthenticated()) return;
     await loadSchema();
+  }
+
+  async function loadAppMeta() {
+    try {
+      const meta = await apiGet("/api/meta");
+      state.appMeta = {
+        version: meta.version || state.appMeta.version,
+        gitSha: meta.gitSha || "",
+        buildTime: meta.buildTime || ""
+      };
+    } catch {
+      // Keep local fallback metadata when the endpoint is not reachable yet.
+    }
   }
 
   function bindEvents() {
@@ -940,10 +961,17 @@
   }
 
   function setStaticUi() {
-    document.title = "sepidAI | حسابداری و خزانه داری";
+    document.title = `sepidAI v${state.appMeta.version} | حسابداری و خزانه داری`;
     document.querySelector(".brand h1").textContent = "sepidAI";
     document.querySelector(".brand p").textContent = "حسابداری و خزانه داری";
     document.querySelector(".eyebrow").textContent = "اتصال مستقیم به SQL Server: sepidAI_Analysis_New";
+    if (el.loginVersion) {
+      const shaText = state.appMeta.gitSha ? ` · ${state.appMeta.gitSha.slice(0, 7)}` : "";
+      el.loginVersion.textContent = `نسخه ${toFaDigits(state.appMeta.version)}${shaText}`;
+    }
+    if (el.loginBuildTime) {
+      el.loginBuildTime.textContent = `ساخت ${formatBuildDateTime(state.appMeta.buildTime)}`;
+    }
     el.searchInput.placeholder = "جستجو در جدول جاری...";
     document.querySelector("label[for='searchInput']").textContent = "جستجو";
     document.querySelector("label[for='fieldFilter']").textContent = "فیلتر ستون";
@@ -1403,6 +1431,13 @@
     return mobileMenuQuery.matches;
   }
 
+  function getInitialFormCollapsed() {
+    if (isMobileMenu()) return true;
+    const saved = localStorage.getItem(formCollapsedKey);
+    if (saved === null) return true;
+    return saved === "true";
+  }
+
   function toggleMenu() {
     state.menuCollapsed = !state.menuCollapsed;
     if (!isMobileMenu()) localStorage.setItem(menuCollapsedKey, String(state.menuCollapsed));
@@ -1830,6 +1865,10 @@
     return new Intl.NumberFormat("fa-IR").format(value);
   }
 
+  function toFaDigits(value) {
+    return String(value ?? "").replace(/\d/g, (digit) => "۰۱۲۳۴۵۶۷۸۹"[Number(digit)]);
+  }
+
   function isDateField(field) {
     const name = field.name || "";
     return /date/i.test(name) || /date|datetime|smalldatetime|datetime2/i.test(field.sqlType || "");
@@ -1853,6 +1892,19 @@
     const m = parts.find((p) => p.type === "month")?.value || "";
     const d = parts.find((p) => p.type === "day")?.value || "";
     return `${y}/${m}/${d}`;
+  }
+
+  function formatBuildDateTime(value) {
+    const date = toDate(value);
+    if (!date) return "-";
+    return new Intl.DateTimeFormat("fa-IR-u-ca-persian", {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false
+    }).format(date);
   }
 
   function toDate(value) {

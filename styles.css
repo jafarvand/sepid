@@ -130,6 +130,15 @@ body:not(.authenticated) {
   font-size: 13px;
 }
 
+.login-build-info {
+  position: relative;
+  display: grid;
+  gap: 4px;
+  padding-top: 2px;
+  color: var(--muted);
+  font-size: 11px;
+}
+
 button,
 input,
 select,
@@ -140,7 +149,7 @@ textarea {
 .app-shell {
   min-height: 100vh;
   display: grid;
-  grid-template-columns: 252px 1fr;
+  grid-template-columns: 228px 1fr;
   transition: grid-template-columns 240ms ease;
 }
 
@@ -445,7 +454,7 @@ textarea {
 
 .top-actions {
   display: grid;
-  grid-template-columns: repeat(4, auto);
+  grid-template-columns: repeat(5, auto);
   justify-content: end;
   align-content: start;
   row-gap: 8px;
@@ -506,7 +515,7 @@ textarea {
 
 .content-grid {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 300px;
+  grid-template-columns: minmax(0, 1fr) 280px;
   gap: 12px;
   align-items: start;
 }
@@ -618,7 +627,7 @@ textarea {
   gap: 8px;
   white-space: nowrap;
   transition: transform 160ms ease, box-shadow 160ms ease, background 160ms ease, border-color 160ms ease, color 160ms ease;
-  font-size: 12px;
+  font-size: 11px;
 }
 
 .primary-btn:hover,
