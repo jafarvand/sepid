@@ -61,6 +61,13 @@ body.authenticated .login-gate {
   display: none !important;
 }
 
+body:not(.authenticated) .app-shell {
+  filter: blur(10px);
+  opacity: 0.72;
+  pointer-events: none;
+  user-select: none;
+}
+
 .login-brand {
   display: flex;
   align-items: center;

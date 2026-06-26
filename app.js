@@ -855,7 +855,6 @@
     const authenticated = isAuthenticated();
     document.body.classList.toggle("authenticated", authenticated);
     if (el.loginGate) el.loginGate.hidden = authenticated;
-    if (el.appShell) el.appShell.hidden = !authenticated;
     if (!authenticated) {
       document.body.classList.remove("menu-open");
       el.loginError.hidden = true;
