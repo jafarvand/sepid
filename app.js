@@ -1,6 +1,7 @@
 (function () {
   const fullscreenKey = "sepidAI-grid-fullscreen-v1";
   const menuCollapsedKey = "sepidAI-menu-collapsed-v1";
+  const formCollapsedKey = "sepidAI-form-collapsed-v1";
   const authKey = "sepidAI-auth-v1";
   const mobileMenuQuery = window.matchMedia("(max-width: 1180px)");
   const demoCredentials = { username: "test", password: "test123" };
@@ -55,6 +56,7 @@
     edit: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h4l10-10-4-4L4 16v4Zm9-11 4 4M15 6l2-2 4 4-2 2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
     delete: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 7h14M9 7V4h6v3M8 7v12m8-12v12M6 7l1 13h10l1-13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
     filter: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16l-6 7v5l-4 2v-7z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>',
+    panel: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v14H4zM14 5v14" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>',
     ledger: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4h12v16H6zM9 8h6M9 12h6M9 16h4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
     wallet: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h15v12H4zM4 7l3-3h12v3M16 13h3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
     boxes: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h7v7H4zM13 9h7v7h-7zM8.5 5h7v4h-7z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>',
@@ -776,6 +778,7 @@
     selectedRowKey: "",
     gridFullscreen: localStorage.getItem(fullscreenKey) === "true",
     menuCollapsed: getInitialMenuCollapsed(),
+    formCollapsed: localStorage.getItem(formCollapsedKey) === "true",
     sort: { field: "", direction: "asc" }
   };
 
@@ -806,6 +809,8 @@
     formMode: document.getElementById("formMode"),
     activeTableName: document.getElementById("activeTableName"),
     clearFormBtn: document.getElementById("clearFormBtn"),
+    editorToggleBtn: document.getElementById("editorToggleBtn"),
+    formPanelCloseBtn: document.getElementById("formPanelCloseBtn"),
     menuToggleBtn: document.getElementById("menuToggleBtn"),
     sideMenuCloseBtn: document.getElementById("sideMenuCloseBtn"),
     mobileMenuBackdrop: document.getElementById("mobileMenuBackdrop"),
@@ -863,6 +868,8 @@
       alert("ثبت رکورد جدید برای دیتابیس عملیاتی فعال نشده است. ابتدا مدل کلیدها و مقادیر پیش فرض هر جدول باید مشخص شود.");
     });
     el.clearFormBtn.addEventListener("click", clearForm);
+    el.editorToggleBtn?.addEventListener("click", toggleFormPanel);
+    el.formPanelCloseBtn?.addEventListener("click", toggleFormPanel);
     el.menuToggleBtn.addEventListener("click", toggleMenu);
     el.sideMenuCloseBtn?.addEventListener("click", closeMenu);
     el.mobileMenuBackdrop?.addEventListener("click", closeMenu);
@@ -943,12 +950,15 @@
     document.querySelector("label[for='valueFilter']").textContent = "مقدار فیلتر";
     setButtonLabel(el.addBtn, "plus", "رکورد جدید");
     setButtonLabel(el.clearFormBtn, "clear", "پاک کردن فرم");
+    setButtonLabel(el.editorToggleBtn, "panel", "بستن پنل");
+    setButtonLabel(el.formPanelCloseBtn, "close", "بستن پنل");
     setButtonLabel(el.exportBtn, "export", "خروجی CSV");
     setButtonLabel(el.logoutBtn, "logout", "خروج");
     setButtonLabel(el.clearFiltersBtn, "filter", "پاک کردن فیلتر");
     document.getElementById("tableHint").textContent = "مرتب سازی و جستجو سمت سرور انجام می شود؛ فیلتر ستون روی صفحه جاری اعمال می شود.";
     if (el.pageSizeSelect) el.pageSizeSelect.value = String(state.pageSize);
     renderMenuCollapsed();
+    renderFormPanel();
     renderGridFullscreen();
   }
 
@@ -1214,6 +1224,11 @@
 
   function activateRow(row, index, scrollIntoView) {
     state.selectedRowKey = getRowKey(row, index);
+    if (state.formCollapsed) {
+      state.formCollapsed = false;
+      localStorage.setItem(formCollapsedKey, "false");
+      renderFormPanel();
+    }
     renderForm(row);
     highlightActiveRow(scrollIntoView);
   }
@@ -1404,6 +1419,19 @@
     el.appShell.classList.toggle("menu-collapsed", state.menuCollapsed);
     document.body.classList.toggle("menu-open", !state.menuCollapsed && isMobileMenu());
     setButtonLabel(el.menuToggleBtn, state.menuCollapsed ? "menu" : "close", state.menuCollapsed ? "باز کردن منو" : "بستن منو");
+  }
+
+  function toggleFormPanel() {
+    state.formCollapsed = !state.formCollapsed;
+    localStorage.setItem(formCollapsedKey, String(state.formCollapsed));
+    renderFormPanel();
+  }
+
+  function renderFormPanel() {
+    el.appShell.classList.toggle("form-collapsed", state.formCollapsed);
+    const label = state.formCollapsed ? "نمایش پنل" : "بستن پنل";
+    setButtonLabel(el.editorToggleBtn, "panel", label);
+    setButtonLabel(el.formPanelCloseBtn, state.formCollapsed ? "panel" : "close", label);
   }
 
   function toggleGridFullscreen() {

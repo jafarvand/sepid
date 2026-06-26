@@ -10,7 +10,11 @@
     <section id="loginGate" class="login-gate">
       <div class="login-panel">
         <div class="login-brand">
-          <div class="brand-mark">س</div>
+          <div class="brand-mark" aria-hidden="true">
+            <span class="logo-cloud"></span>
+            <span class="logo-core">س</span>
+            <span class="logo-dot"></span>
+          </div>
           <div>
             <h1>sepidAI</h1>
             <p>ورود به سامانه</p>
@@ -34,7 +38,11 @@
     <div class="app-shell">
       <aside class="sidebar" aria-label="منوی سیستم‌ها">
         <div class="brand">
-          <div class="brand-mark">س</div>
+          <div class="brand-mark" aria-hidden="true">
+            <span class="logo-cloud"></span>
+            <span class="logo-core">س</span>
+            <span class="logo-dot"></span>
+          </div>
           <div>
             <h1>sepidAI</h1>
             <p>مدیریت اطلاعات پایه</p>
@@ -53,6 +61,7 @@
           </div>
           <div class="top-actions">
             <button id="menuToggleBtn" class="ghost-btn" type="button">بستن منو</button>
+            <button id="editorToggleBtn" class="ghost-btn" type="button">بستن پنل</button>
             <button id="fullscreenBtn" class="ghost-btn" type="button">نمای تمام‌صفحه جدول</button>
             <button id="exportBtn" class="ghost-btn" type="button">خروجی CSV</button>
             <button id="logoutBtn" class="ghost-btn" type="button">خروج</button>
@@ -121,7 +130,10 @@
                 <p id="formMode">رکورد جدید</p>
                 <h3 id="activeTableName">-</h3>
               </div>
-              <button id="clearFormBtn" class="ghost-btn" type="button">پاک کردن فرم</button>
+              <div class="form-header-actions">
+                <button id="clearFormBtn" class="ghost-btn" type="button">پاک کردن فرم</button>
+                <button id="formPanelCloseBtn" class="ghost-btn" type="button">بستن پنل</button>
+              </div>
             </div>
             <form id="editorForm" class="editor-form"></form>
           </aside>
