@@ -18,6 +18,10 @@
   box-sizing: border-box;
 }
 
+[hidden] {
+  display: none !important;
+}
+
 body {
   margin: 0;
   background:
@@ -33,10 +37,14 @@ body.menu-open {
 }
 
 .login-gate {
-  min-height: 100vh;
+  position: fixed;
+  inset: 0;
+  z-index: 30;
   display: grid;
   place-items: center;
   padding: 24px;
+  background: rgba(15, 23, 42, 0.36);
+  backdrop-filter: blur(10px);
 }
 
 .login-panel {
@@ -47,6 +55,10 @@ body.menu-open {
   background: rgba(255, 255, 255, 0.92);
   box-shadow: var(--shadow-strong);
   backdrop-filter: blur(14px);
+}
+
+body.authenticated .login-gate {
+  display: none !important;
 }
 
 .login-brand {
