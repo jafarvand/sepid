@@ -28,6 +28,10 @@ body {
   letter-spacing: 0;
 }
 
+body.menu-open {
+  overflow: hidden;
+}
+
 button,
 input,
 select,
@@ -114,6 +118,11 @@ textarea {
   align-items: center;
   gap: 12px;
   margin-bottom: 28px;
+}
+
+.sidebar-close,
+.mobile-menu-backdrop {
+  display: none;
 }
 
 .brand-mark {
@@ -641,9 +650,10 @@ tbody tr {
     top: 0;
     right: 0;
     bottom: 0;
-    width: min(86vw, 340px);
+    width: min(94vw, 390px);
     max-height: none;
     z-index: 10;
+    padding-bottom: max(18px, env(safe-area-inset-bottom));
     box-shadow: -22px 0 70px rgba(15, 23, 42, 0.25);
   }
 
@@ -653,13 +663,43 @@ tbody tr {
     opacity: 0;
   }
 
-  .app-shell:not(.menu-collapsed)::before {
-    content: "";
+  .mobile-menu-backdrop {
     position: fixed;
     inset: 0;
     z-index: 9;
+    display: none;
+    border: 0;
+    padding: 0;
     background: rgba(15, 23, 42, 0.36);
     animation: fadeIn 180ms ease both;
+  }
+
+  .app-shell:not(.menu-collapsed) .mobile-menu-backdrop {
+    display: block;
+  }
+
+  .sidebar-close {
+    margin-right: auto;
+    width: 38px;
+    height: 38px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 8px;
+    display: inline-grid;
+    place-items: center;
+    background: rgba(255, 255, 255, 0.08);
+    color: #e0f2fe;
+    cursor: pointer;
+    font-size: 24px;
+    line-height: 1;
+  }
+
+  .sidebar .brand {
+    position: sticky;
+    top: -1px;
+    z-index: 2;
+    margin: -16px -12px 12px;
+    padding: 16px 12px 12px;
+    background: linear-gradient(180deg, #102a43 78%, rgba(16, 42, 67, 0));
   }
 
   .content-grid {
@@ -701,6 +741,15 @@ tbody tr {
 
   .menu-btn {
     padding: 10px 12px;
+    grid-template-columns: 32px 1fr;
+  }
+
+  .menu-btn strong {
+    font-size: 13px;
+  }
+
+  .menu-btn span {
+    font-size: 11px;
   }
 
   .main {
@@ -787,6 +836,10 @@ tbody tr {
 }
 
 @media (max-width: 480px) {
+  .sidebar {
+    width: 100vw;
+  }
+
   .top-actions {
     grid-template-columns: 1fr;
   }

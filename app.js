@@ -1,6 +1,7 @@
 (function () {
   const fullscreenKey = "sepidAI-grid-fullscreen-v1";
   const menuCollapsedKey = "sepidAI-menu-collapsed-v1";
+  const mobileMenuQuery = window.matchMedia("(max-width: 1180px)");
   const moneyFormatter = new Intl.NumberFormat("fa-IR", {
     maximumFractionDigits: 4
   });
@@ -766,7 +767,7 @@
     pageSize: 100,
     editingRow: null,
     gridFullscreen: localStorage.getItem(fullscreenKey) === "true",
-    menuCollapsed: localStorage.getItem(menuCollapsedKey) === "true",
+    menuCollapsed: getInitialMenuCollapsed(),
     sort: { field: "", direction: "asc" }
   };
 
@@ -787,6 +788,8 @@
     activeTableName: document.getElementById("activeTableName"),
     clearFormBtn: document.getElementById("clearFormBtn"),
     menuToggleBtn: document.getElementById("menuToggleBtn"),
+    sideMenuCloseBtn: document.getElementById("sideMenuCloseBtn"),
+    mobileMenuBackdrop: document.getElementById("mobileMenuBackdrop"),
     fullscreenBtn: document.getElementById("fullscreenBtn"),
     exportBtn: document.getElementById("exportBtn"),
     importInput: document.getElementById("importInput"),
@@ -814,6 +817,14 @@
     });
     el.clearFormBtn.addEventListener("click", clearForm);
     el.menuToggleBtn.addEventListener("click", toggleMenu);
+    el.sideMenuCloseBtn?.addEventListener("click", closeMenu);
+    el.mobileMenuBackdrop?.addEventListener("click", closeMenu);
+    mobileMenuQuery.addEventListener("change", () => {
+      if (isMobileMenu()) {
+        state.menuCollapsed = true;
+      }
+      renderMenuCollapsed();
+    });
     el.fullscreenBtn.addEventListener("click", toggleGridFullscreen);
     el.editorForm.addEventListener("submit", saveForm);
     el.exportBtn.addEventListener("click", exportVisibleRows);
@@ -872,6 +883,7 @@
         clearForm();
         renderMenu();
         renderTabs();
+        if (isMobileMenu()) closeMenu();
         await loadRows();
       });
       el.systemMenu.appendChild(btn);
@@ -1120,14 +1132,30 @@
     renderForm(null);
   }
 
+  function getInitialMenuCollapsed() {
+    if (isMobileMenu()) return true;
+    return localStorage.getItem(menuCollapsedKey) === "true";
+  }
+
+  function isMobileMenu() {
+    return mobileMenuQuery.matches;
+  }
+
   function toggleMenu() {
     state.menuCollapsed = !state.menuCollapsed;
-    localStorage.setItem(menuCollapsedKey, String(state.menuCollapsed));
+    if (!isMobileMenu()) localStorage.setItem(menuCollapsedKey, String(state.menuCollapsed));
+    renderMenuCollapsed();
+  }
+
+  function closeMenu() {
+    state.menuCollapsed = true;
+    if (!isMobileMenu()) localStorage.setItem(menuCollapsedKey, "true");
     renderMenuCollapsed();
   }
 
   function renderMenuCollapsed() {
     el.appShell.classList.toggle("menu-collapsed", state.menuCollapsed);
+    document.body.classList.toggle("menu-open", !state.menuCollapsed && isMobileMenu());
     setButtonLabel(el.menuToggleBtn, state.menuCollapsed ? "menu" : "close", state.menuCollapsed ? "باز کردن منو" : "بستن منو");
   }
 
