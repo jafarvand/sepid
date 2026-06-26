@@ -1,19 +1,49 @@
 services:
+  sepidai-db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: sepidAI-db
+    restart: unless-stopped
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: ${SA_PASSWORD}
+      MSSQL_PID: Express
+    ports:
+      - "${SQL_PUBLIC_PORT:-1433}:1433"
+    volumes:
+      - sepidai_sql_data:/var/opt/mssql
+      - /opt/sepidAI/db-backup:/backup:ro
+
   sepidai-web:
-    image: ${IMAGE_NAME:-ghcr.io/OWNER/REPO:latest}
+    image: ${IMAGE_NAME:-ghcr.io/jafarvand/sepid:latest}
     container_name: sepidai-web
     restart: unless-stopped
+    depends_on:
+      - sepidai-db
     ports:
       - "${APP_PORT:-5173}:5173"
     environment:
       HOST: 0.0.0.0
       PORT: 5173
-      SQL_SERVER: ${SQL_SERVER}
-      SQL_PORT: ${SQL_PORT:-1433}
+      SQL_SERVER: sepidai-db
+      SQL_PORT: 1433
       SQL_DATABASE: ${SQL_DATABASE:-sepidAI_Analysis_New}
-      SQL_USER: ${SQL_USER}
-      SQL_PASSWORD: ${SQL_PASSWORD}
-      SQL_ENCRYPT: ${SQL_ENCRYPT:-false}
-      SQL_TRUST_CERT: ${SQL_TRUST_CERT:-true}
+      SQL_USER: ${SQL_USER:-sa}
+      SQL_PASSWORD: ${SA_PASSWORD}
+      SQL_ENCRYPT: false
+      SQL_TRUST_CERT: true
+      VIRTUAL_HOST: sepidai.zekabot.com
+      VIRTUAL_PORT: 5173
+      LETSENCRYPT_HOST: sepidai.zekabot.com
+      LETSENCRYPT_EMAIL: jafarvand@gmail.com
+    networks:
+      - default
+      - nginx-proxy
 
+volumes:
+  sepidai_sql_data:
 
+networks:
+  default:
+  nginx-proxy:
+    external: true
+    name: wallet_nginx-proxy
