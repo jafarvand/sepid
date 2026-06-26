@@ -1,7 +1,9 @@
 (function () {
   const fullscreenKey = "sepidAI-grid-fullscreen-v1";
   const menuCollapsedKey = "sepidAI-menu-collapsed-v1";
+  const authKey = "sepidAI-auth-v1";
   const mobileMenuQuery = window.matchMedia("(max-width: 1180px)");
+  const demoCredentials = { username: "test", password: "test123" };
   const moneyFormatter = new Intl.NumberFormat("fa-IR", {
     maximumFractionDigits: 4
   });
@@ -45,6 +47,7 @@
     export: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0 4-4m-4 4-4-4M5 19h14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
     plus: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>',
     save: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5h12l2 2v12H5zM8 5v6h8M8 19v-5h8v5" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>',
+    logout: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 17l5-5-5-5M15 12H4M20 4v16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
     clear: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7 7 10 10M17 7 7 17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>',
     prev: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 6-6 6 6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
     next: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
@@ -772,6 +775,12 @@
   };
 
   const el = {
+    loginGate: document.getElementById("loginGate"),
+    loginForm: document.getElementById("loginForm"),
+    loginUsername: document.getElementById("loginUsername"),
+    loginPassword: document.getElementById("loginPassword"),
+    loginError: document.getElementById("loginError"),
+    loginSubmitBtn: document.getElementById("loginSubmitBtn"),
     appShell: document.querySelector(".app-shell"),
     systemMenu: document.getElementById("systemMenu"),
     moduleTabs: document.getElementById("moduleTabs"),
@@ -792,6 +801,7 @@
     mobileMenuBackdrop: document.getElementById("mobileMenuBackdrop"),
     fullscreenBtn: document.getElementById("fullscreenBtn"),
     exportBtn: document.getElementById("exportBtn"),
+    logoutBtn: document.getElementById("logoutBtn"),
     importInput: document.getElementById("importInput"),
     sqlImportBtn: document.getElementById("sqlImportBtn"),
     resetBtn: document.getElementById("resetBtn")
@@ -802,6 +812,8 @@
   async function init() {
     bindEvents();
     setStaticUi();
+    renderAuthState();
+    if (!isAuthenticated()) return;
     await loadSchema();
   }
 
@@ -819,6 +831,8 @@
     el.menuToggleBtn.addEventListener("click", toggleMenu);
     el.sideMenuCloseBtn?.addEventListener("click", closeMenu);
     el.mobileMenuBackdrop?.addEventListener("click", closeMenu);
+    el.loginForm?.addEventListener("submit", submitLogin);
+    el.logoutBtn?.addEventListener("click", logout);
     mobileMenuQuery.addEventListener("change", () => {
       if (isMobileMenu()) {
         state.menuCollapsed = true;
@@ -833,6 +847,54 @@
     if (el.resetBtn) el.resetBtn.style.display = "none";
   }
 
+  function isAuthenticated() {
+    return sessionStorage.getItem(authKey) === "true";
+  }
+
+  function renderAuthState() {
+    const authenticated = isAuthenticated();
+    if (el.loginGate) el.loginGate.hidden = authenticated;
+    if (el.appShell) el.appShell.hidden = !authenticated;
+    if (!authenticated) {
+      document.body.classList.remove("menu-open");
+      el.loginError.hidden = true;
+      el.loginPassword.value = "";
+      el.loginUsername.focus();
+    }
+  }
+
+  async function submitLogin(event) {
+    event.preventDefault();
+    const username = el.loginUsername.value.trim();
+    const password = el.loginPassword.value;
+    const ok = username === demoCredentials.username && password === demoCredentials.password;
+    el.loginError.hidden = ok;
+    if (!ok) {
+      el.loginPassword.focus();
+      el.loginPassword.select();
+      return;
+    }
+    sessionStorage.setItem(authKey, "true");
+    renderAuthState();
+    await loadSchema();
+  }
+
+  function logout() {
+    sessionStorage.removeItem(authKey);
+    state.catalog = [];
+    state.activeTableId = "";
+    state.rows = [];
+    state.fields = [];
+    state.primaryKey = [];
+    state.total = 0;
+    clearForm();
+    el.systemMenu.innerHTML = "";
+    el.moduleTabs.innerHTML = "";
+    el.tableHead.innerHTML = "";
+    el.tableBody.innerHTML = "";
+    renderAuthState();
+  }
+
   function setStaticUi() {
     document.title = "sepidAI | حسابداری و خزانه داری";
     document.querySelector(".brand h1").textContent = "sepidAI";
@@ -845,6 +907,7 @@
     setButtonLabel(el.addBtn, "plus", "رکورد جدید");
     setButtonLabel(el.clearFormBtn, "clear", "پاک کردن فرم");
     setButtonLabel(el.exportBtn, "export", "خروجی JSON");
+    setButtonLabel(el.logoutBtn, "logout", "خروج");
     document.getElementById("tableHint").textContent = "مرتب سازی و جستجو سمت سرور انجام می شود؛ فیلتر ستون روی صفحه جاری اعمال می شود.";
     renderMenuCollapsed();
     renderGridFullscreen();

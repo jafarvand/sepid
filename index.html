@@ -7,7 +7,31 @@
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
-    <div class="app-shell">
+    <section id="loginGate" class="login-gate">
+      <div class="login-panel">
+        <div class="login-brand">
+          <div class="brand-mark">س</div>
+          <div>
+            <h1>sepidAI</h1>
+            <p>ورود به سامانه</p>
+          </div>
+        </div>
+        <form id="loginForm" class="login-form">
+          <label class="field">
+            <span>نام کاربری</span>
+            <input id="loginUsername" name="username" type="text" autocomplete="username" />
+          </label>
+          <label class="field">
+            <span>رمز عبور</span>
+            <input id="loginPassword" name="password" type="password" autocomplete="current-password" />
+          </label>
+          <p id="loginError" class="login-error" hidden>نام کاربری یا رمز عبور نادرست است.</p>
+          <button id="loginSubmitBtn" class="primary-btn" type="submit">ورود</button>
+        </form>
+      </div>
+    </section>
+
+    <div class="app-shell" hidden>
       <aside class="sidebar" aria-label="منوی سیستم‌ها">
         <div class="brand">
           <div class="brand-mark">س</div>
@@ -31,6 +55,7 @@
             <button id="menuToggleBtn" class="ghost-btn" type="button">بستن منو</button>
             <button id="fullscreenBtn" class="ghost-btn" type="button">نمای تمام‌صفحه جدول</button>
             <button id="exportBtn" class="ghost-btn" type="button">خروجی JSON</button>
+            <button id="logoutBtn" class="ghost-btn" type="button">خروج</button>
             <label class="ghost-btn file-action">
               ورود JSON
               <input id="importInput" type="file" accept="application/json" />
