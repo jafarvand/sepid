@@ -40,24 +40,36 @@ body.menu-open {
   position: fixed;
   inset: 0;
   z-index: 30;
-  display: grid;
-  place-items: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   padding: 24px;
   background: rgba(15, 23, 42, 0.36);
   backdrop-filter: blur(10px);
 }
 
 .login-panel {
-  width: min(100%, 420px);
+  position: relative;
+  width: 100%;
   max-width: 420px;
+  margin: auto;
   padding: 24px;
   border: 1px solid var(--line);
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.92);
+  border-radius: 16px;
+  background: var(--surface);
   box-shadow: var(--shadow-strong);
-  backdrop-filter: blur(14px);
   display: grid;
   gap: 16px;
+  overflow: hidden;
+}
+
+.login-panel::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 88px;
+  background: linear-gradient(180deg, rgba(45, 212, 191, 0.16), rgba(45, 212, 191, 0));
+  pointer-events: none;
 }
 
 body.authenticated .login-gate {
@@ -72,10 +84,11 @@ body:not(.authenticated) .app-shell {
 }
 
 .login-brand {
+  position: relative;
   display: flex;
   align-items: center;
   gap: 12px;
-  margin-bottom: 20px;
+  margin-bottom: 4px;
 }
 
 .login-brand h1 {
@@ -89,6 +102,7 @@ body:not(.authenticated) .app-shell {
 }
 
 .login-form {
+  position: relative;
   display: grid;
   gap: 12px;
 }
