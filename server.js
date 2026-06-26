@@ -105,6 +105,14 @@ async function handleApi(req, res, url) {
     return;
   }
 
+  if (req.method === "DELETE" && url.pathname === "/api/row") {
+    const tableId = required(url.searchParams.get("table"), "table");
+    const [schema, table] = splitTableId(tableId);
+    const body = JSON.parse(await readBodyText(req));
+    sendJson(res, 200, await deleteRow(schema, table, body));
+    return;
+  }
+
   sendJson(res, 404, { error: "not_found" });
 }
 
@@ -263,6 +271,38 @@ async function updateRow(schema, table, body) {
   const result = await request.query(`
     UPDATE ${quoteName(schema)}.${quoteName(table)}
     SET ${setParts.join(", ")}
+    WHERE ${whereParts.join(" AND ")};
+  `);
+  return { ok: true, affected: result.rowsAffected[0] || 0 };
+}
+
+async function deleteRow(schema, table, body) {
+  if (!sql) {
+    const bodyPath = path.join(os.tmpdir(), `sepidAI-row-${Date.now()}-${Math.random().toString(16).slice(2)}.json`);
+    fs.writeFileSync(bodyPath, JSON.stringify(body || {}), "utf8");
+    try {
+      return await runSqlApi(["-Action", "delete", "-Schema", schema, "-Table", table, "-BodyPath", bodyPath]);
+    } finally {
+      fs.rmSync(bodyPath, { force: true });
+    }
+  }
+  await assertTable(schema, table);
+  const columns = await getColumns(schema, table);
+  const pkColumns = columns.filter((c) => c.IsPrimaryKey).map((c) => c.COLUMN_NAME);
+  if (!pkColumns.length) throw new Error(`Table ${schema}.${table} has no primary key; delete is disabled.`);
+
+  const keys = body?.keys || {};
+  const whereParts = [];
+  const request = (await getPool()).request();
+  let keyIndex = 0;
+  for (const column of pkColumns) {
+    if (!Object.prototype.hasOwnProperty.call(keys, column)) throw new Error(`Missing key column ${column}.`);
+    const param = `k${keyIndex++}`;
+    whereParts.push(`${quoteName(column)} = @${param}`);
+    request.input(param, keys[column]);
+  }
+  const result = await request.query(`
+    DELETE FROM ${quoteName(schema)}.${quoteName(table)}
     WHERE ${whereParts.join(" AND ")};
   `);
   return { ok: true, affected: result.rowsAffected[0] || 0 };

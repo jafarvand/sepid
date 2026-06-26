@@ -4,6 +4,7 @@
   const authKey = "sepidAI-auth-v1";
   const mobileMenuQuery = window.matchMedia("(max-width: 1180px)");
   const demoCredentials = { username: "test", password: "test123" };
+  const rowKeyFallback = "__rowIndex";
   const moneyFormatter = new Intl.NumberFormat("fa-IR", {
     maximumFractionDigits: 4
   });
@@ -51,6 +52,9 @@
     clear: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7 7 10 10M17 7 7 17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>',
     prev: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 6-6 6 6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
     next: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    edit: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h4l10-10-4-4L4 16v4Zm9-11 4 4M15 6l2-2 4 4-2 2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    delete: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 7h14M9 7V4h6v3M8 7v12m8-12v12M6 7l1 13h10l1-13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    filter: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16l-6 7v5l-4 2v-7z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>',
     ledger: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4h12v16H6zM9 8h6M9 12h6M9 16h4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
     wallet: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h15v12H4zM4 7l3-3h12v3M16 13h3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
     boxes: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h7v7H4zM13 9h7v7h-7zM8.5 5h7v4h-7z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>',
@@ -769,6 +773,7 @@
     page: 1,
     pageSize: 100,
     editingRow: null,
+    selectedRowKey: "",
     gridFullscreen: localStorage.getItem(fullscreenKey) === "true",
     menuCollapsed: getInitialMenuCollapsed(),
     sort: { field: "", direction: "asc" }
@@ -788,8 +793,13 @@
     searchInput: document.getElementById("searchInput"),
     fieldFilter: document.getElementById("fieldFilter"),
     valueFilter: document.getElementById("valueFilter"),
+    pageSizeSelect: document.getElementById("pageSizeSelect"),
+    gotoPageInput: document.getElementById("gotoPageInput"),
+    gotoPageBtn: document.getElementById("gotoPageBtn"),
+    clearFiltersBtn: document.getElementById("clearFiltersBtn"),
     addBtn: document.getElementById("addBtn"),
     recordCount: document.getElementById("recordCount"),
+    tableWrap: document.getElementById("tableWrap"),
     tableHead: document.getElementById("tableHead"),
     tableBody: document.getElementById("tableBody"),
     editorForm: document.getElementById("editorForm"),
@@ -822,8 +832,33 @@
       state.page = 1;
       loadRows();
     }, 350));
-    el.fieldFilter.addEventListener("change", renderTable);
-    el.valueFilter.addEventListener("input", renderTable);
+    el.fieldFilter.addEventListener("change", () => {
+      state.page = 1;
+      renderTable();
+    });
+    el.valueFilter.addEventListener("input", () => {
+      state.page = 1;
+      renderTable();
+    });
+    el.pageSizeSelect?.addEventListener("change", async () => {
+      state.pageSize = Number(el.pageSizeSelect.value || 100);
+      state.page = 1;
+      await loadRows();
+    });
+    el.gotoPageBtn?.addEventListener("click", gotoPage);
+    el.gotoPageInput?.addEventListener("keydown", async (event) => {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        await gotoPage();
+      }
+    });
+    el.clearFiltersBtn?.addEventListener("click", async () => {
+      el.searchInput.value = "";
+      el.fieldFilter.value = "";
+      el.valueFilter.value = "";
+      state.page = 1;
+      await loadRows();
+    });
     el.addBtn.addEventListener("click", () => {
       alert("ثبت رکورد جدید برای دیتابیس عملیاتی فعال نشده است. ابتدا مدل کلیدها و مقادیر پیش فرض هر جدول باید مشخص شود.");
     });
@@ -842,6 +877,7 @@
     el.fullscreenBtn.addEventListener("click", toggleGridFullscreen);
     el.editorForm.addEventListener("submit", saveForm);
     el.exportBtn.addEventListener("click", exportVisibleRows);
+    el.tableWrap?.addEventListener("keydown", handleGridKeydown);
     if (el.importInput?.closest("label")) el.importInput.closest("label").style.display = "none";
     if (el.sqlImportBtn) el.sqlImportBtn.style.display = "none";
     if (el.resetBtn) el.resetBtn.style.display = "none";
@@ -887,6 +923,7 @@
     state.fields = [];
     state.primaryKey = [];
     state.total = 0;
+    state.selectedRowKey = "";
     clearForm();
     el.systemMenu.innerHTML = "";
     el.moduleTabs.innerHTML = "";
@@ -906,9 +943,11 @@
     document.querySelector("label[for='valueFilter']").textContent = "مقدار فیلتر";
     setButtonLabel(el.addBtn, "plus", "رکورد جدید");
     setButtonLabel(el.clearFormBtn, "clear", "پاک کردن فرم");
-    setButtonLabel(el.exportBtn, "export", "خروجی JSON");
+    setButtonLabel(el.exportBtn, "export", "خروجی CSV");
     setButtonLabel(el.logoutBtn, "logout", "خروج");
+    setButtonLabel(el.clearFiltersBtn, "filter", "پاک کردن فیلتر");
     document.getElementById("tableHint").textContent = "مرتب سازی و جستجو سمت سرور انجام می شود؛ فیلتر ستون روی صفحه جاری اعمال می شود.";
+    if (el.pageSizeSelect) el.pageSizeSelect.value = String(state.pageSize);
     renderMenuCollapsed();
     renderGridFullscreen();
   }
@@ -1010,14 +1049,21 @@
     state.fields = result.fields || [];
     state.primaryKey = result.primaryKey || [];
     state.total = result.total || 0;
+    if (!state.rows.length && state.total > 0 && state.page > 1) {
+      state.page = Math.max(1, Math.ceil(state.total / state.pageSize));
+      return loadRows();
+    }
+    if (el.pageSizeSelect) el.pageSizeSelect.value = String(state.pageSize);
+    if (el.gotoPageInput) el.gotoPageInput.value = String(state.page);
     renderTableSelectors();
     renderTable();
-    renderForm(null);
+    if (!state.rows.length) clearForm();
   }
 
   function renderTableSelectors() {
     const table = getActiveTable();
     el.activeTableName.textContent = table ? `${tableTitle(table)} · ${toFaNumber(state.total)} رکورد` : "-";
+    const previousValue = el.fieldFilter.value;
     el.fieldFilter.innerHTML = `<option value="">همه ستون ها</option>`;
     visibleFields().forEach((field) => {
       const option = document.createElement("option");
@@ -1025,6 +1071,9 @@
       option.textContent = field.primaryKey ? `${fieldLabel(field)} *` : fieldLabel(field);
       el.fieldFilter.appendChild(option);
     });
+    if (previousValue && [...el.fieldFilter.options].some((option) => option.value === previousValue)) {
+      el.fieldFilter.value = previousValue;
+    }
   }
 
   function renderTable() {
@@ -1052,27 +1101,68 @@
       }
       headRow.appendChild(th);
     });
+    const actionHead = document.createElement("th");
+    actionHead.textContent = "عملیات";
+    headRow.appendChild(actionHead);
     el.tableHead.appendChild(headRow);
 
     if (!rows.length) {
       const tr = document.createElement("tr");
       const td = document.createElement("td");
-      td.colSpan = Math.max(1, fields.length);
+      td.colSpan = Math.max(1, fields.length + 1);
       td.className = "empty-cell";
       td.textContent = "داده ای برای نمایش وجود ندارد.";
       tr.appendChild(td);
       el.tableBody.appendChild(tr);
+      state.selectedRowKey = "";
+      state.editingRow = null;
+      el.formMode.textContent = "یک ردیف را از جدول انتخاب کنید.";
+      el.editorForm.innerHTML = "";
     } else {
-      rows.forEach((row) => {
+      const availableKeys = [];
+      rows.forEach((row, index) => {
+        const rowKey = getRowKey(row, index);
+        availableKeys.push(rowKey);
         const tr = document.createElement("tr");
-        tr.addEventListener("click", () => renderForm(row));
+        tr.dataset.rowKey = rowKey;
+        tr.tabIndex = -1;
+        tr.classList.toggle("is-active", rowKey === state.selectedRowKey);
+        tr.addEventListener("click", () => activateRow(row, index, true));
         fields.forEach((field) => {
           const td = document.createElement("td");
           td.textContent = formatValue(row[field.name], field);
           tr.appendChild(td);
         });
+        const actionCell = document.createElement("td");
+        actionCell.className = "row-actions";
+        const editBtn = document.createElement("button");
+        editBtn.type = "button";
+        editBtn.className = "row-btn";
+        setButtonLabel(editBtn, "edit", "ویرایش");
+        editBtn.addEventListener("click", (event) => {
+          event.stopPropagation();
+          activateRow(row, index, true);
+        });
+        actionCell.appendChild(editBtn);
+        if (state.primaryKey.length) {
+          const deleteBtn = document.createElement("button");
+          deleteBtn.type = "button";
+          deleteBtn.className = "row-btn delete";
+          setButtonLabel(deleteBtn, "delete", "حذف");
+          deleteBtn.addEventListener("click", async (event) => {
+            event.stopPropagation();
+            await deleteRow(row);
+          });
+          actionCell.appendChild(deleteBtn);
+        }
+        tr.appendChild(actionCell);
         el.tableBody.appendChild(tr);
       });
+      if (!availableKeys.includes(state.selectedRowKey)) {
+        activateRow(rows[0], 0, false);
+      } else {
+        highlightActiveRow();
+      }
     }
 
     renderPagination(rows.length);
@@ -1108,6 +1198,84 @@
 
     el.recordCount.appendChild(prev);
     el.recordCount.appendChild(next);
+    if (el.gotoPageInput) {
+      el.gotoPageInput.min = "1";
+      el.gotoPageInput.max = String(totalPages);
+      el.gotoPageInput.value = String(state.page);
+    }
+  }
+
+  async function gotoPage() {
+    const totalPages = Math.max(1, Math.ceil(state.total / state.pageSize));
+    const requested = Number(el.gotoPageInput?.value || state.page);
+    state.page = Math.min(totalPages, Math.max(1, requested || 1));
+    await loadRows();
+  }
+
+  function activateRow(row, index, scrollIntoView) {
+    state.selectedRowKey = getRowKey(row, index);
+    renderForm(row);
+    highlightActiveRow(scrollIntoView);
+  }
+
+  function highlightActiveRow(scrollIntoView = false) {
+    const rows = [...el.tableBody.querySelectorAll("tr[data-row-key]")];
+    rows.forEach((row) => row.classList.toggle("is-active", row.dataset.rowKey === state.selectedRowKey));
+    const activeRow = rows.find((row) => row.dataset.rowKey === state.selectedRowKey);
+    if (scrollIntoView && activeRow) {
+      activeRow.scrollIntoView({ block: "nearest", inline: "nearest" });
+    }
+  }
+
+  async function handleGridKeydown(event) {
+    if (!state.rows.length) return;
+    if (["INPUT", "SELECT", "TEXTAREA", "BUTTON"].includes(document.activeElement?.tagName)) return;
+    const visibleRows = getVisibleRows();
+    if (!visibleRows.length) return;
+    const rowIndex = visibleRows.findIndex((row, index) => getRowKey(row, index) === state.selectedRowKey);
+    const currentIndex = rowIndex >= 0 ? rowIndex : 0;
+    if (event.key === "ArrowDown") {
+      event.preventDefault();
+      const nextIndex = Math.min(visibleRows.length - 1, currentIndex + 1);
+      activateRow(visibleRows[nextIndex], nextIndex, true);
+      return;
+    }
+    if (event.key === "ArrowUp") {
+      event.preventDefault();
+      const nextIndex = Math.max(0, currentIndex - 1);
+      activateRow(visibleRows[nextIndex], nextIndex, true);
+      return;
+    }
+    if (event.key === "Home") {
+      event.preventDefault();
+      activateRow(visibleRows[0], 0, true);
+      return;
+    }
+    if (event.key === "End") {
+      event.preventDefault();
+      activateRow(visibleRows[visibleRows.length - 1], visibleRows.length - 1, true);
+      return;
+    }
+    if (event.key === "PageDown") {
+      event.preventDefault();
+      if (state.page < Math.max(1, Math.ceil(state.total / state.pageSize))) {
+        state.page += 1;
+        await loadRows();
+      }
+      return;
+    }
+    if (event.key === "PageUp") {
+      event.preventDefault();
+      if (state.page > 1) {
+        state.page -= 1;
+        await loadRows();
+      }
+      return;
+    }
+    if (event.key === "Enter") {
+      event.preventDefault();
+      activateRow(visibleRows[currentIndex], currentIndex, true);
+    }
   }
 
   function renderForm(row) {
@@ -1190,9 +1358,25 @@
     el.formMode.textContent = "تغییرات ذخیره شد.";
   }
 
+  async function deleteRow(row) {
+    if (!state.primaryKey.length) return;
+    const ok = window.confirm("رکورد انتخاب شده حذف شود؟");
+    if (!ok) return;
+    const keys = {};
+    state.primaryKey.forEach((key) => {
+      keys[key] = row[key];
+    });
+    await apiJson(`/api/row?table=${encodeURIComponent(state.activeTableId)}`, "DELETE", { keys });
+    state.selectedRowKey = "";
+    clearForm();
+    await loadRows();
+  }
+
   function clearForm() {
     state.editingRow = null;
+    state.selectedRowKey = "";
     renderForm(null);
+    highlightActiveRow();
   }
 
   function getInitialMenuCollapsed() {
@@ -1261,16 +1445,15 @@
   }
 
   function exportVisibleRows() {
-    const payload = {
-      table: state.activeTableId,
-      total: state.total,
-      exportedRows: getVisibleRows()
-    };
-    const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json;charset=utf-8" });
+    const fields = visibleFields();
+    const header = fields.map((field) => fieldLabel(field));
+    const rows = getVisibleRows().map((row) => fields.map((field) => csvEscape(formatValue(row[field.name], field))));
+    const csv = [header.map(csvEscape).join(","), ...rows.map((cols) => cols.join(","))].join("\r\n");
+    const blob = new Blob([`\uFEFF${csv}`], { type: "text/csv;charset=utf-8" });
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = url;
-    link.download = `${state.activeTableId || "table"}-page.json`;
+    link.download = `${state.activeTableId || "table"}-page.csv`;
     link.click();
     URL.revokeObjectURL(url);
   }
@@ -1285,8 +1468,22 @@
     });
   }
 
+  function getRowKey(row, index) {
+    if (state.primaryKey.length) {
+      return state.primaryKey.map((key) => `${key}:${String(row[key] ?? "")}`).join("|");
+    }
+    const firstVisibleField = visibleFields()[0]?.name;
+    return `${rowKeyFallback}:${index}:${String(firstVisibleField ? row[firstVisibleField] ?? "" : "")}`;
+  }
+
+  function csvEscape(value) {
+    const text = String(value ?? "");
+    return `"${text.replace(/"/g, "\"\"")}"`;
+  }
+
   function setLoading(message) {
-    el.tableBody.innerHTML = `<tr><td class="empty-cell">${escapeHtml(message)}</td></tr>`;
+    const colspan = Math.max(1, visibleFields().length + 1);
+    el.tableBody.innerHTML = `<tr><td class="empty-cell" colspan="${colspan}">${escapeHtml(message)}</td></tr>`;
   }
 
   function sortCatalog(catalog) {

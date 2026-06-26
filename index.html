@@ -54,7 +54,7 @@
           <div class="top-actions">
             <button id="menuToggleBtn" class="ghost-btn" type="button">بستن منو</button>
             <button id="fullscreenBtn" class="ghost-btn" type="button">نمای تمام‌صفحه جدول</button>
-            <button id="exportBtn" class="ghost-btn" type="button">خروجی JSON</button>
+            <button id="exportBtn" class="ghost-btn" type="button">خروجی CSV</button>
             <button id="logoutBtn" class="ghost-btn" type="button">خروج</button>
             <label class="ghost-btn file-action">
               ورود JSON
@@ -74,7 +74,7 @@
                 <label for="searchInput">جستجو</label>
                 <input id="searchInput" type="search" placeholder="عبارت، کد، عنوان یا توضیح..." />
               </div>
-              <div class="filter-box">
+              <div class="filter-box compact-filter">
                 <label for="fieldFilter">فیلتر ستون</label>
                 <select id="fieldFilter"></select>
               </div>
@@ -82,15 +82,32 @@
                 <label for="valueFilter">مقدار فیلتر</label>
                 <input id="valueFilter" type="text" placeholder="مثلا فعال یا تهران" />
               </div>
+              <div class="filter-box compact-filter">
+                <label for="pageSizeSelect">اندازه صفحه</label>
+                <select id="pageSizeSelect">
+                  <option value="50">۵۰</option>
+                  <option value="100" selected>۱۰۰</option>
+                  <option value="200">۲۰۰</option>
+                  <option value="500">۵۰۰</option>
+                </select>
+              </div>
+              <div class="filter-box compact-filter goto-filter">
+                <label for="gotoPageInput">برو به صفحه</label>
+                <div class="inline-input">
+                  <input id="gotoPageInput" type="number" min="1" inputmode="numeric" />
+                  <button id="gotoPageBtn" class="secondary-btn" type="button">برو</button>
+                </div>
+              </div>
+              <button id="clearFiltersBtn" class="ghost-btn" type="button">پاک کردن فیلتر</button>
               <button id="addBtn" class="primary-btn" type="button">ثبت رکورد جدید</button>
             </div>
 
             <div class="meta-row">
               <span id="recordCount">۰ رکورد</span>
-              <span id="tableHint">برای مرتب‌سازی روی عنوان ستون کلیک کنید.</span>
+              <span id="tableHint">برای مرتب‌سازی روی عنوان ستون کلیک کنید. با کلیدهای بالا و پایین بین ردیف‌ها جابه‌جا شوید.</span>
             </div>
 
-            <div class="table-wrap">
+            <div id="tableWrap" class="table-wrap" tabindex="0">
               <table>
                 <thead id="tableHead"></thead>
                 <tbody id="tableBody"></tbody>

@@ -1,6 +1,6 @@
 param(
   [Parameter(Mandatory = $true)]
-  [ValidateSet("schema", "rows", "update")]
+  [ValidateSet("schema", "rows", "update", "delete")]
   [string]$Action,
 
   [string]$ServerInstance = ".\SQLEXPRESS",
@@ -357,6 +357,28 @@ ORDER BY
     if ($setParts.Count -eq 0) { throw "No editable values supplied." }
     $qualified = (Quote-Name $Schema) + "." + (Quote-Name $Table)
     $cmd.CommandText = "UPDATE $qualified SET " + ($setParts -join ", ") + " WHERE " + ($whereParts -join " AND ")
+    $affected = $cmd.ExecuteNonQuery()
+    Write-Json ([pscustomobject]@{ ok = $true; affected = $affected })
+    return
+  }
+
+  if ($Action -eq "delete") {
+    if (-not $BodyPath -or -not (Test-Path -LiteralPath $BodyPath)) { throw "BodyPath is required for delete." }
+    $body = Get-Content -LiteralPath $BodyPath -Raw | ConvertFrom-Json
+    if ($pkColumns.Count -eq 0) { throw "Table $Schema.$Table has no primary key; delete is disabled." }
+
+    $whereParts = New-Object 'System.Collections.Generic.List[string]'
+    $cmd = New-Command $conn ""
+    foreach ($pk in $pkColumns) {
+      if (-not ($body.keys.PSObject.Properties.Name -contains $pk)) { throw "Missing key column $pk." }
+      $paramName = "@k_" + $whereParts.Count
+      $whereParts.Add((Quote-Name $pk) + " = " + $paramName)
+      $prop = $body.keys.PSObject.Properties[$pk]
+      [void]$cmd.Parameters.AddWithValue($paramName, $(if ($null -eq $prop.Value) { [DBNull]::Value } else { $prop.Value }))
+    }
+
+    $qualified = (Quote-Name $Schema) + "." + (Quote-Name $Table)
+    $cmd.CommandText = "DELETE FROM $qualified WHERE " + ($whereParts -join " AND ")
     $affected = $cmd.ExecuteNonQuery()
     Write-Json ([pscustomobject]@{ ok = $true; affected = $affected })
     return
